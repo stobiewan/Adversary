@@ -1,0 +1,581 @@
+{
+  "contractName": "DaiContractInterface",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "src",
+          "type": "address"
+        },
+        {
+          "name": "dst",
+          "type": "address"
+        },
+        {
+          "name": "wad",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.23;\n\nimport \"./Ownable.sol\";\nimport \"./SafeMath.sol\";\n\ncontract DaiContractInterface {\n  // function transferFrom(address src, address dst, uint wad) public stoppable returns (bool);  TODO is stopable required\n  function transferFrom(address src, address dst, uint wad) public returns (bool);\n}\n\ncontract DaiInterface is Ownable {\n\n  DaiContractInterface contractInterface;\n\n  // modifier onlyOwnerOf(uint _zombieId) {\n  //   require(msg.sender == zombieToOwner[_zombieId]);\n  //   _;\n  // }\n\n  // function setKittyContractAddress(address _address) external onlyOwner {\n  //   kittyContract = KittyInterface(_address);\n  // }\n\n  // function _triggerCooldown(Zombie storage _zombie) internal {\n  //   _zombie.readyTime = uint32(now + cooldownTime);\n  // }\n\n  // function _isReady(Zombie storage _zombie) internal view returns (bool) {\n  //     return (_zombie.readyTime <= now);\n  // }\n\n  // function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) internal onlyOwnerOf(_zombieId) {\n  //   Zombie storage myZombie = zombies[_zombieId];\n  //   require(_isReady(myZombie));\n  //   _targetDna = _targetDna % dnaModulus;\n  //   uint newDna = (myZombie.dna + _targetDna) / 2;\n  //   if (keccak256(_species) == keccak256(\"kitty\")) {\n  //     newDna = newDna - newDna % 100 + 99;\n  //   }\n  //   _createZombie(\"NoName\", newDna);\n  //   _triggerCooldown(myZombie);\n  // }\n\n  // function feedOnKitty(uint _zombieId, uint _kittyId) public {\n  //   uint kittyDna;\n  //   (,,,,,,,,,kittyDna) = kittyContract.getKitty(_kittyId);\n  //   feedAndMultiply(_zombieId, kittyDna, \"kitty\");\n  // }\n}\n\n",
+  "sourcePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/DaiInterface.sol",
+  "ast": {
+    "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/DaiInterface.sol",
+    "exportedSymbols": {
+      "DaiContractInterface": [
+        171
+      ],
+      "DaiInterface": [
+        176
+      ]
+    },
+    "id": 177,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 157,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".23"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:1"
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/Ownable.sol",
+        "file": "./Ownable.sol",
+        "id": 158,
+        "nodeType": "ImportDirective",
+        "scope": 177,
+        "sourceUnit": 233,
+        "src": "26:23:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/SafeMath.sol",
+        "file": "./SafeMath.sol",
+        "id": 159,
+        "nodeType": "ImportDirective",
+        "scope": 177,
+        "sourceUnit": 327,
+        "src": "50:24:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 171,
+        "linearizedBaseContracts": [
+          171
+        ],
+        "name": "DaiContractInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 170,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "transferFrom",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 166,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 161,
+                  "name": "src",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 170,
+                  "src": "255:11:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 160,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "255:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 163,
+                  "name": "dst",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 170,
+                  "src": "268:11:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 162,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "268:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 165,
+                  "name": "wad",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 170,
+                  "src": "281:8:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 164,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "281:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "254:36:1"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 169,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 168,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 170,
+                  "src": "307:4:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 167,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "307:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "306:6:1"
+            },
+            "scope": 171,
+            "src": "233:80:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 177,
+        "src": "76:239:1"
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 172,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 232,
+              "src": "342:7:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$232",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 173,
+            "nodeType": "InheritanceSpecifier",
+            "src": "342:7:1"
+          }
+        ],
+        "contractDependencies": [
+          232
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 176,
+        "linearizedBaseContracts": [
+          176,
+          232
+        ],
+        "name": "DaiInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 175,
+            "name": "contractInterface",
+            "nodeType": "VariableDeclaration",
+            "scope": 176,
+            "src": "355:38:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_DaiContractInterface_$171",
+              "typeString": "contract DaiContractInterface"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 174,
+              "name": "DaiContractInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 171,
+              "src": "355:20:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_DaiContractInterface_$171",
+                "typeString": "contract DaiContractInterface"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 177,
+        "src": "317:1299:1"
+      }
+    ],
+    "src": "0:1618:1"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/DaiInterface.sol",
+    "exportedSymbols": {
+      "DaiContractInterface": [
+        171
+      ],
+      "DaiInterface": [
+        176
+      ]
+    },
+    "id": 177,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 157,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".23"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:1"
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/Ownable.sol",
+        "file": "./Ownable.sol",
+        "id": 158,
+        "nodeType": "ImportDirective",
+        "scope": 177,
+        "sourceUnit": 233,
+        "src": "26:23:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/SafeMath.sol",
+        "file": "./SafeMath.sol",
+        "id": 159,
+        "nodeType": "ImportDirective",
+        "scope": 177,
+        "sourceUnit": 327,
+        "src": "50:24:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 171,
+        "linearizedBaseContracts": [
+          171
+        ],
+        "name": "DaiContractInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 170,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "transferFrom",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 166,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 161,
+                  "name": "src",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 170,
+                  "src": "255:11:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 160,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "255:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 163,
+                  "name": "dst",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 170,
+                  "src": "268:11:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 162,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "268:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 165,
+                  "name": "wad",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 170,
+                  "src": "281:8:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 164,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "281:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "254:36:1"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 169,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 168,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 170,
+                  "src": "307:4:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 167,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "307:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "306:6:1"
+            },
+            "scope": 171,
+            "src": "233:80:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 177,
+        "src": "76:239:1"
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 172,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 232,
+              "src": "342:7:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$232",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 173,
+            "nodeType": "InheritanceSpecifier",
+            "src": "342:7:1"
+          }
+        ],
+        "contractDependencies": [
+          232
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 176,
+        "linearizedBaseContracts": [
+          176,
+          232
+        ],
+        "name": "DaiInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 175,
+            "name": "contractInterface",
+            "nodeType": "VariableDeclaration",
+            "scope": 176,
+            "src": "355:38:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_DaiContractInterface_$171",
+              "typeString": "contract DaiContractInterface"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 174,
+              "name": "DaiContractInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 171,
+              "src": "355:20:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_DaiContractInterface_$171",
+                "typeString": "contract DaiContractInterface"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 177,
+        "src": "317:1299:1"
+      }
+    ],
+    "src": "0:1618:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.23+commit.124ca40d.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-04-22T10:50:07.271Z"
+}

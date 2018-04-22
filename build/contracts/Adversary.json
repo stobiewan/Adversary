@@ -1,0 +1,4139 @@
+{
+  "contractName": "Adversary",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "offerIds",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "name": "offers",
+      "outputs": [
+        {
+          "name": "maker",
+          "type": "address"
+        },
+        {
+          "name": "currency",
+          "type": "string"
+        },
+        {
+          "name": "dai",
+          "type": "uint256"
+        },
+        {
+          "name": "listIndex",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "name": "escrows",
+      "outputs": [
+        {
+          "name": "maker",
+          "type": "address"
+        },
+        {
+          "name": "taker",
+          "type": "address"
+        },
+        {
+          "name": "dai",
+          "type": "uint256"
+        },
+        {
+          "name": "earliestTermination",
+          "type": "uint256"
+        },
+        {
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "name": "startPriceCents",
+          "type": "uint32"
+        },
+        {
+          "name": "milliMarginRatio",
+          "type": "uint32"
+        },
+        {
+          "name": "kiloMinimumPriceDeltaRatio",
+          "type": "uint32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "escrowIds",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "currentId",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "NewOffer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "RemovedOffer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "ClaimedOffer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "FinalisedOffer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_currency",
+          "type": "string"
+        },
+        {
+          "name": "_dai",
+          "type": "uint256"
+        }
+      ],
+      "name": "createOffer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_offerId",
+          "type": "uint64"
+        }
+      ],
+      "name": "deleteOffer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x60806040526000600460006101000a81548167ffffffffffffffff021916908367ffffffffffffffff160217905550336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550610dad8061007d6000396000f300608060405260043610610099576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063110b9d891461009e5780632ebb620c146100f3578063412bca83146101e4578063501cb96f1461021b578063786f1295146103135780637e0b455b146103685780638da5cb5b146103db578063e00dd16114610432578063f2fde38b14610471575b600080fd5b3480156100aa57600080fd5b506100c9600480360381019080803590602001909291905050506104b4565b604051808267ffffffffffffffff1667ffffffffffffffff16815260200191505060405180910390f35b3480156100ff57600080fd5b50610128600480360381019080803567ffffffffffffffff1690602001909291905050506104f1565b604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200180602001848152602001838152602001828103825285818151815260200191508051906020019080838360005b838110156101a657808201518184015260208101905061018b565b50505050905090810190601f1680156101d35780820380516001836020036101000a031916815260200191505b509550505050505060405180910390f35b3480156101f057600080fd5b50610219600480360381019080803567ffffffffffffffff1690602001909291905050506105d9565b005b34801561022757600080fd5b50610250600480360381019080803567ffffffffffffffff169060200190929190505050610695565b604051808973ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018781526020018681526020018581526020018463ffffffff1663ffffffff1681526020018363ffffffff1663ffffffff1681526020018263ffffffff1663ffffffff1681526020019850505050505050505060405180910390f35b34801561031f57600080fd5b5061033e6004803603810190808035906020019092919050505061074d565b604051808267ffffffffffffffff1667ffffffffffffffff16815260200191505060405180910390f35b34801561037457600080fd5b506103d9600480360381019080803590602001908201803590602001908080601f01602080910402602001604051908101604052809392919081815260200183838082843782019150505050505091929192908035906020019092919050505061078a565b005b3480156103e757600080fd5b506103f061091a565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561043e57600080fd5b5061044761093f565b604051808267ffffffffffffffff1667ffffffffffffffff16815260200191505060405180910390f35b34801561047d57600080fd5b506104b2600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610959565b005b6002818154811015156104c357fe5b9060005260206000209060049182820401919006600802915054906101000a900467ffffffffffffffff1681565b60056020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690806001018054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156105c35780601f10610598576101008083540402835291602001916105c3565b820191906000526020600020905b8154815290600101906020018083116105a657829003601f168201915b5050505050908060020154908060030154905084565b600560008267ffffffffffffffff1667ffffffffffffffff16815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561065d57600080fd5b61066681610aae565b7f7711bcf5c2a990c3d6319ede111d76724d096d38649ca2650063db51d073333d60405160405180910390a150565b60066020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060020154908060030154908060040154908060050160009054906101000a900463ffffffff16908060050160049054906101000a900463ffffffff16908060050160089054906101000a900463ffffffff16905088565b60038181548110151561075c57fe5b9060005260206000209060049182820401919006600802915054906101000a900467ffffffffffffffff1681565b6080604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200183815260200182815260200160016002600460009054906101000a900467ffffffffffffffff16908060018154018082558091505090600182039060005260206000209060049182820401919006600802909192909190916101000a81548167ffffffffffffffff021916908367ffffffffffffffff1602179055500381525060056000600460009054906101000a900467ffffffffffffffff1667ffffffffffffffff1667ffffffffffffffff16815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010190805190602001906108d2929190610c5a565b5060408201518160020155606082015181600301559050507fa00340ea2c49630c646933ad372a70f3ec1d77afaccb71c6fc8ace1c1635723a60405160405180910390a15050565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600460009054906101000a900467ffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156109b457600080fd5b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16141515156109f057600080fd5b8073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050565b6000600560008367ffffffffffffffff1667ffffffffffffffff1681526020019081526020016000206003015490506002600160028054905003815481101515610af457fe5b90600052602060002090600491828204019190066008029054906101000a900467ffffffffffffffff16600282815481101515610b2d57fe5b90600052602060002090600491828204019190066008026101000a81548167ffffffffffffffff021916908367ffffffffffffffff1602179055506002805480919060019003610b7d9190610cda565b50600560008367ffffffffffffffff1667ffffffffffffffff168152602001908152602001600020600080820160006101000a81549073ffffffffffffffffffffffffffffffffffffffff0219169055600182016000610bdd9190610d14565b6002820160009055600382016000905550508060056000600284815481101515610c0357fe5b90600052602060002090600491828204019190066008029054906101000a900467ffffffffffffffff1667ffffffffffffffff1667ffffffffffffffff168152602001908152602001600020600301819055505050565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10610c9b57805160ff1916838001178555610cc9565b82800160010185558215610cc9579182015b82811115610cc8578251825591602001919060010190610cad565b5b509050610cd69190610d5c565b5090565b815481835581811115610d0f576003016004900481600301600490048360005260206000209182019101610d0e9190610d5c565b5b505050565b50805460018160011615610100020316600290046000825580601f10610d3a5750610d59565b601f016020900490600052602060002090810190610d589190610d5c565b5b50565b610d7e91905b80821115610d7a576000816000905550600101610d62565b5090565b905600a165627a7a723058204620e723a2fbfba01f984c97202ada5ecbc581f039c9357718bb229b49a6132f0029",
+  "deployedBytecode": "0x608060405260043610610099576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063110b9d891461009e5780632ebb620c146100f3578063412bca83146101e4578063501cb96f1461021b578063786f1295146103135780637e0b455b146103685780638da5cb5b146103db578063e00dd16114610432578063f2fde38b14610471575b600080fd5b3480156100aa57600080fd5b506100c9600480360381019080803590602001909291905050506104b4565b604051808267ffffffffffffffff1667ffffffffffffffff16815260200191505060405180910390f35b3480156100ff57600080fd5b50610128600480360381019080803567ffffffffffffffff1690602001909291905050506104f1565b604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200180602001848152602001838152602001828103825285818151815260200191508051906020019080838360005b838110156101a657808201518184015260208101905061018b565b50505050905090810190601f1680156101d35780820380516001836020036101000a031916815260200191505b509550505050505060405180910390f35b3480156101f057600080fd5b50610219600480360381019080803567ffffffffffffffff1690602001909291905050506105d9565b005b34801561022757600080fd5b50610250600480360381019080803567ffffffffffffffff169060200190929190505050610695565b604051808973ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018873ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018781526020018681526020018581526020018463ffffffff1663ffffffff1681526020018363ffffffff1663ffffffff1681526020018263ffffffff1663ffffffff1681526020019850505050505050505060405180910390f35b34801561031f57600080fd5b5061033e6004803603810190808035906020019092919050505061074d565b604051808267ffffffffffffffff1667ffffffffffffffff16815260200191505060405180910390f35b34801561037457600080fd5b506103d9600480360381019080803590602001908201803590602001908080601f01602080910402602001604051908101604052809392919081815260200183838082843782019150505050505091929192908035906020019092919050505061078a565b005b3480156103e757600080fd5b506103f061091a565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561043e57600080fd5b5061044761093f565b604051808267ffffffffffffffff1667ffffffffffffffff16815260200191505060405180910390f35b34801561047d57600080fd5b506104b2600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610959565b005b6002818154811015156104c357fe5b9060005260206000209060049182820401919006600802915054906101000a900467ffffffffffffffff1681565b60056020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690806001018054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156105c35780601f10610598576101008083540402835291602001916105c3565b820191906000526020600020905b8154815290600101906020018083116105a657829003601f168201915b5050505050908060020154908060030154905084565b600560008267ffffffffffffffff1667ffffffffffffffff16815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561065d57600080fd5b61066681610aae565b7f7711bcf5c2a990c3d6319ede111d76724d096d38649ca2650063db51d073333d60405160405180910390a150565b60066020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060020154908060030154908060040154908060050160009054906101000a900463ffffffff16908060050160049054906101000a900463ffffffff16908060050160089054906101000a900463ffffffff16905088565b60038181548110151561075c57fe5b9060005260206000209060049182820401919006600802915054906101000a900467ffffffffffffffff1681565b6080604051908101604052803373ffffffffffffffffffffffffffffffffffffffff16815260200183815260200182815260200160016002600460009054906101000a900467ffffffffffffffff16908060018154018082558091505090600182039060005260206000209060049182820401919006600802909192909190916101000a81548167ffffffffffffffff021916908367ffffffffffffffff1602179055500381525060056000600460009054906101000a900467ffffffffffffffff1667ffffffffffffffff1667ffffffffffffffff16815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010190805190602001906108d2929190610c5a565b5060408201518160020155606082015181600301559050507fa00340ea2c49630c646933ad372a70f3ec1d77afaccb71c6fc8ace1c1635723a60405160405180910390a15050565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600460009054906101000a900467ffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156109b457600080fd5b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16141515156109f057600080fd5b8073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050565b6000600560008367ffffffffffffffff1667ffffffffffffffff1681526020019081526020016000206003015490506002600160028054905003815481101515610af457fe5b90600052602060002090600491828204019190066008029054906101000a900467ffffffffffffffff16600282815481101515610b2d57fe5b90600052602060002090600491828204019190066008026101000a81548167ffffffffffffffff021916908367ffffffffffffffff1602179055506002805480919060019003610b7d9190610cda565b50600560008367ffffffffffffffff1667ffffffffffffffff168152602001908152602001600020600080820160006101000a81549073ffffffffffffffffffffffffffffffffffffffff0219169055600182016000610bdd9190610d14565b6002820160009055600382016000905550508060056000600284815481101515610c0357fe5b90600052602060002090600491828204019190066008029054906101000a900467ffffffffffffffff1667ffffffffffffffff1667ffffffffffffffff168152602001908152602001600020600301819055505050565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10610c9b57805160ff1916838001178555610cc9565b82800160010185558215610cc9579182015b82811115610cc8578251825591602001919060010190610cad565b5b509050610cd69190610d5c565b5090565b815481835581811115610d0f576003016004900481600301600490048360005260206000209182019101610d0e9190610d5c565b5b505050565b50805460018160011615610100020316600290046000825580601f10610d3a5750610d59565b601f016020900490600052602060002090810190610d589190610d5c565b5b50565b610d7e91905b80821115610d7a576000816000905550600101610d62565b5090565b905600a165627a7a723058204620e723a2fbfba01f984c97202ada5ecbc581f039c9357718bb229b49a6132f0029",
+  "sourceMap": "105:1336:0:-;;;664:1;638:27;;;;;;;;;;;;;;;;;;;;509:10:2;501:5;;:18;;;;;;;;;;;;;;;;;;105:1336:0;;;;;;",
+  "deployedSourceMap": "105:1336:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;581:24;;8:9:-1;5:2;;;30:1;27;20:12;5:2;581:24:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;670:39;;8:9:-1;5:2;;;30:1;27;20:12;5:2;670:39:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;99:1;94:3;90:11;84:18;80:1;75:3;71:11;64:39;52:2;49:1;45:10;40:15;;8:100;;;12:14;670:39:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1257:182;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1257:182:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;713:41;;8:9:-1;5:2;;;30:1;27;20:12;5:2;713:41:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;609:25;;8:9:-1;5:2;;;30:1;27;20:12;5:2;609:25:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;760:222;;8:9:-1;5:2;;;30:1;27;20:12;5:2;760:222:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;238:20:2;;8:9:-1;5:2;;;30:1;27;20:12;5:2;238:20:2;;;;;;;;;;;;;;;;;;;;;;;;;;;638:27:0;;8:9:-1;5:2;;;30:1;27;20:12;5:2;638:27:0;;;;;;;;;;;;;;;;;;;;;;;;;;;832:174:2;;8:9:-1;5:2;;;30:1;27;20:12;5:2;832:174:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;581:24:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;670:39::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;1257:182::-;1332:6;:16;1339:8;1332:16;;;;;;;;;;;;;;;:22;;;;;;;;;;;;1318:36;;:10;:36;;;1310:45;;;;;;;;1361:22;1374:8;1361:12;:22::i;:::-;1420:14;;;;;;;;;;1257:182;:::o;713:41::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;609:25::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;760:222::-;897:64;;;;;;;;;903:10;897:64;;;;;;915:9;897:64;;;;926:4;897:64;;;;959:1;932:8;946:9;;;;;;;;;;;932:24;;39:1:-1;33:3;27:10;23:18;57:10;52:3;45:23;79:10;72:17;;0:93;932:24:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:28;897:64;;;877:6;:17;884:9;;;;;;;;;;;877:17;;;;;;;;;;;;;;;:84;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;967:10;;;;;;;;;;760:222;;:::o;238:20:2:-;;;;;;;;;;;;;:::o;638:27:0:-;;;;;;;;;;;;;:::o;832:174:2:-;653:5;;;;;;;;;;;639:19;;:10;:19;;;631:28;;;;;;;;928:1;908:22;;:8;:22;;;;900:31;;;;;;;;970:8;942:37;;963:5;;;;;;;;;;;942:37;;;;;;;;;;;;993:8;985:5;;:16;;;;;;;;;;;;;;;;;;832:174;:::o;986:267:0:-;1040:14;1057:6;:16;1064:8;1057:16;;;;;;;;;;;;;;;:26;;;1040:43;;1111:8;1138:1;1120:8;:15;;;;:19;1111:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1089:8;1098:9;1089:19;;;;;;;;;;;;;;;;;;;;;;;;;;;;:51;;;;;;;;;;;;;;;;;;1146:8;:18;;;;;;;;;;;;:::i;:::-;;1177:6;:16;1184:8;1177:16;;;;;;;;;;;;;;;;1170:23;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;1239:9;1199:6;:27;1206:8;1215:9;1206:19;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1199:27;;;;;;;;;;;;;;;:37;;:49;;;;986:267;;:::o;105:1336::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.4.23;\n\nimport \"./Ownable.sol\";\nimport \"./SafeMath.sol\";\nimport \"./DaiInterface.sol\";\n\ncontract Adversary is DaiInterface {\n\n  using SafeMath for uint256;\n\n  event NewOffer();\n  event RemovedOffer();\n  event ClaimedOffer();\n  event FinalisedOffer();\n\n  struct Offer {\n    address maker;\n    string currency;\n    uint dai;\n    uint listIndex;\n  }\n\n  struct Escrow {\n    address maker;\n    address taker;\n    uint dai;\n    uint earliestTermination;\n    uint id;\n    uint32 startPriceCents;\n    uint32 milliMarginRatio;\n    uint32 kiloMinimumPriceDeltaRatio;\n  }\n\n  uint64[] public offerIds;\n  uint64[] public escrowIds;\n  uint64 public currentId = 0;\n\n  mapping (uint64 => Offer) public offers;\n  mapping (uint64 => Escrow) public escrows;\n\n\n  function createOffer(string _currency, uint _dai) public {\n    // todo dai.transferFrom(msg.sender, self, _dai);\n    offers[currentId] = Offer(msg.sender, _currency, _dai, offerIds.push(currentId) - 1);\n    NewOffer();\n  }\n\n  function _deleteOffer(uint64 _offerId) internal {\n    uint listIndex = offers[_offerId].listIndex;\n    offerIds[listIndex] = offerIds[offerIds.length - 1];\n    offerIds.length --;\n    delete offers[_offerId];\n    offers[offerIds[listIndex]].listIndex = listIndex;\n  }\n\n  function deleteOffer(uint64 _offerId) external {\n    require(msg.sender == offers[_offerId].maker);\n    _deleteOffer(_offerId);\n    // todo return dai to user\n    RemovedOffer();\n  }\n}\n",
+  "sourcePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/Adversary.sol",
+  "ast": {
+    "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/Adversary.sol",
+    "exportedSymbols": {
+      "Adversary": [
+        155
+      ]
+    },
+    "id": 156,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".23"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:0"
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/Ownable.sol",
+        "file": "./Ownable.sol",
+        "id": 2,
+        "nodeType": "ImportDirective",
+        "scope": 156,
+        "sourceUnit": 233,
+        "src": "26:23:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/SafeMath.sol",
+        "file": "./SafeMath.sol",
+        "id": 3,
+        "nodeType": "ImportDirective",
+        "scope": 156,
+        "sourceUnit": 327,
+        "src": "50:24:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/DaiInterface.sol",
+        "file": "./DaiInterface.sol",
+        "id": 4,
+        "nodeType": "ImportDirective",
+        "scope": 156,
+        "sourceUnit": 177,
+        "src": "75:28:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 5,
+              "name": "DaiInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 176,
+              "src": "127:12:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_DaiInterface_$176",
+                "typeString": "contract DaiInterface"
+              }
+            },
+            "id": 6,
+            "nodeType": "InheritanceSpecifier",
+            "src": "127:12:0"
+          }
+        ],
+        "contractDependencies": [
+          176,
+          232
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 155,
+        "linearizedBaseContracts": [
+          155,
+          176,
+          232
+        ],
+        "name": "Adversary",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 9,
+            "libraryName": {
+              "contractScope": null,
+              "id": 7,
+              "name": "SafeMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 326,
+              "src": "151:8:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SafeMath_$326",
+                "typeString": "library SafeMath"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "145:27:0",
+            "typeName": {
+              "id": 8,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "164:7:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 11,
+            "name": "NewOffer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 10,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "190:2:0"
+            },
+            "src": "176:17:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 13,
+            "name": "RemovedOffer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 12,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "214:2:0"
+            },
+            "src": "196:21:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 15,
+            "name": "ClaimedOffer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 14,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "238:2:0"
+            },
+            "src": "220:21:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 17,
+            "name": "FinalisedOffer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 16,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "264:2:0"
+            },
+            "src": "244:23:0"
+          },
+          {
+            "canonicalName": "Adversary.Offer",
+            "id": 26,
+            "members": [
+              {
+                "constant": false,
+                "id": 19,
+                "name": "maker",
+                "nodeType": "VariableDeclaration",
+                "scope": 26,
+                "src": "290:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 18,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "290:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21,
+                "name": "currency",
+                "nodeType": "VariableDeclaration",
+                "scope": 26,
+                "src": "309:15:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 20,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "309:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 23,
+                "name": "dai",
+                "nodeType": "VariableDeclaration",
+                "scope": 26,
+                "src": "330:8:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 22,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "330:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 25,
+                "name": "listIndex",
+                "nodeType": "VariableDeclaration",
+                "scope": 26,
+                "src": "344:14:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 24,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "344:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Offer",
+            "nodeType": "StructDefinition",
+            "scope": 155,
+            "src": "271:92:0",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "Adversary.Escrow",
+            "id": 43,
+            "members": [
+              {
+                "constant": false,
+                "id": 28,
+                "name": "maker",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "387:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 27,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "387:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 30,
+                "name": "taker",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "406:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 29,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "406:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 32,
+                "name": "dai",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "425:8:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 31,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "425:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 34,
+                "name": "earliestTermination",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "439:24:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 33,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "439:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36,
+                "name": "id",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "469:7:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 35,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "469:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 38,
+                "name": "startPriceCents",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "482:22:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint32",
+                  "typeString": "uint32"
+                },
+                "typeName": {
+                  "id": 37,
+                  "name": "uint32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "482:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 40,
+                "name": "milliMarginRatio",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "510:23:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint32",
+                  "typeString": "uint32"
+                },
+                "typeName": {
+                  "id": 39,
+                  "name": "uint32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "510:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 42,
+                "name": "kiloMinimumPriceDeltaRatio",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "539:33:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint32",
+                  "typeString": "uint32"
+                },
+                "typeName": {
+                  "id": 41,
+                  "name": "uint32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "539:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Escrow",
+            "nodeType": "StructDefinition",
+            "scope": 155,
+            "src": "367:210:0",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 46,
+            "name": "offerIds",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "581:24:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+              "typeString": "uint64[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 44,
+                "name": "uint64",
+                "nodeType": "ElementaryTypeName",
+                "src": "581:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint64",
+                  "typeString": "uint64"
+                }
+              },
+              "id": 45,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "581:8:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_uint64_$dyn_storage_ptr",
+                "typeString": "uint64[]"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 49,
+            "name": "escrowIds",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "609:25:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+              "typeString": "uint64[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 47,
+                "name": "uint64",
+                "nodeType": "ElementaryTypeName",
+                "src": "609:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint64",
+                  "typeString": "uint64"
+                }
+              },
+              "id": 48,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "609:8:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_uint64_$dyn_storage_ptr",
+                "typeString": "uint64[]"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 52,
+            "name": "currentId",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "638:27:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint64",
+              "typeString": "uint64"
+            },
+            "typeName": {
+              "id": 50,
+              "name": "uint64",
+              "nodeType": "ElementaryTypeName",
+              "src": "638:6:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint64",
+                "typeString": "uint64"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "30",
+              "id": 51,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "664:1:0",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_0_by_1",
+                "typeString": "int_const 0"
+              },
+              "value": "0"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 56,
+            "name": "offers",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "670:39:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+              "typeString": "mapping(uint64 => struct Adversary.Offer)"
+            },
+            "typeName": {
+              "id": 55,
+              "keyType": {
+                "id": 53,
+                "name": "uint64",
+                "nodeType": "ElementaryTypeName",
+                "src": "679:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint64",
+                  "typeString": "uint64"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "670:25:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                "typeString": "mapping(uint64 => struct Adversary.Offer)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 54,
+                "name": "Offer",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 26,
+                "src": "689:5:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Offer_$26_storage_ptr",
+                  "typeString": "struct Adversary.Offer"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 60,
+            "name": "escrows",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "713:41:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Escrow_$43_storage_$",
+              "typeString": "mapping(uint64 => struct Adversary.Escrow)"
+            },
+            "typeName": {
+              "id": 59,
+              "keyType": {
+                "id": 57,
+                "name": "uint64",
+                "nodeType": "ElementaryTypeName",
+                "src": "722:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint64",
+                  "typeString": "uint64"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "713:26:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Escrow_$43_storage_$",
+                "typeString": "mapping(uint64 => struct Adversary.Escrow)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 58,
+                "name": "Escrow",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 43,
+                "src": "732:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Escrow_$43_storage_ptr",
+                  "typeString": "struct Adversary.Escrow"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 87,
+              "nodeType": "Block",
+              "src": "817:165:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 82,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 67,
+                        "name": "offers",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 56,
+                        "src": "877:6:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                          "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                        }
+                      },
+                      "id": 69,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 68,
+                        "name": "currentId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 52,
+                        "src": "884:9:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "877:17:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Offer_$26_storage",
+                        "typeString": "struct Adversary.Offer storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 71,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 341,
+                            "src": "903:3:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 72,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "903:10:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 73,
+                          "name": "_currency",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 62,
+                          "src": "915:9:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_string_memory_ptr",
+                            "typeString": "string memory"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 74,
+                          "name": "_dai",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 64,
+                          "src": "926:4:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "id": 80,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftExpression": {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "id": 77,
+                                "name": "currentId",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 52,
+                                "src": "946:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint64",
+                                  "typeString": "uint64"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_uint64",
+                                  "typeString": "uint64"
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": null,
+                                "id": 75,
+                                "name": "offerIds",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 46,
+                                "src": "932:8:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                                  "typeString": "uint64[] storage ref"
+                                }
+                              },
+                              "id": 76,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "memberName": "push",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": null,
+                              "src": "932:13:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_arraypush_nonpayable$_t_uint64_$returns$_t_uint256_$",
+                                "typeString": "function (uint64) returns (uint256)"
+                              }
+                            },
+                            "id": 78,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "932:24:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "nodeType": "BinaryOperation",
+                          "operator": "-",
+                          "rightExpression": {
+                            "argumentTypes": null,
+                            "hexValue": "31",
+                            "id": 79,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "number",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "959:1:0",
+                            "subdenomination": null,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_rational_1_by_1",
+                              "typeString": "int_const 1"
+                            },
+                            "value": "1"
+                          },
+                          "src": "932:28:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          },
+                          {
+                            "typeIdentifier": "t_string_memory_ptr",
+                            "typeString": "string memory"
+                          },
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        ],
+                        "id": 70,
+                        "name": "Offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 26,
+                        "src": "897:5:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_struct$_Offer_$26_storage_ptr_$",
+                          "typeString": "type(struct Adversary.Offer storage pointer)"
+                        }
+                      },
+                      "id": 81,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "structConstructorCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "897:64:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Offer_$26_memory",
+                        "typeString": "struct Adversary.Offer memory"
+                      }
+                    },
+                    "src": "877:84:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Offer_$26_storage",
+                      "typeString": "struct Adversary.Offer storage ref"
+                    }
+                  },
+                  "id": 83,
+                  "nodeType": "ExpressionStatement",
+                  "src": "877:84:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 84,
+                      "name": "NewOffer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 11,
+                      "src": "967:8:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 85,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "967:10:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 86,
+                  "nodeType": "ExpressionStatement",
+                  "src": "967:10:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 88,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "createOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 65,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 62,
+                  "name": "_currency",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88,
+                  "src": "781:16:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 61,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "781:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 64,
+                  "name": "_dai",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88,
+                  "src": "799:9:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 63,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "799:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "780:29:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 66,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "817:0:0"
+            },
+            "scope": 155,
+            "src": "760:222:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 130,
+              "nodeType": "Block",
+              "src": "1034:219:0",
+              "statements": [
+                {
+                  "assignments": [
+                    94
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 94,
+                      "name": "listIndex",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 131,
+                      "src": "1040:14:0",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 93,
+                        "name": "uint",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1040:4:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 99,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 95,
+                        "name": "offers",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 56,
+                        "src": "1057:6:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                          "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                        }
+                      },
+                      "id": 97,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 96,
+                        "name": "_offerId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 90,
+                        "src": "1064:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1057:16:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Offer_$26_storage",
+                        "typeString": "struct Adversary.Offer storage ref"
+                      }
+                    },
+                    "id": 98,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "listIndex",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 25,
+                    "src": "1057:26:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1040:43:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 109,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 100,
+                        "name": "offerIds",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 46,
+                        "src": "1089:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                          "typeString": "uint64[] storage ref"
+                        }
+                      },
+                      "id": 102,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 101,
+                        "name": "listIndex",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 94,
+                        "src": "1098:9:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "1089:19:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint64",
+                        "typeString": "uint64"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 103,
+                        "name": "offerIds",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 46,
+                        "src": "1111:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                          "typeString": "uint64[] storage ref"
+                        }
+                      },
+                      "id": 108,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 107,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 104,
+                            "name": "offerIds",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 46,
+                            "src": "1120:8:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                              "typeString": "uint64[] storage ref"
+                            }
+                          },
+                          "id": 105,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "length",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1120:15:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "-",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "31",
+                          "id": 106,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1138:1:0",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_1_by_1",
+                            "typeString": "int_const 1"
+                          },
+                          "value": "1"
+                        },
+                        "src": "1120:19:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1111:29:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint64",
+                        "typeString": "uint64"
+                      }
+                    },
+                    "src": "1089:51:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint64",
+                      "typeString": "uint64"
+                    }
+                  },
+                  "id": 110,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1089:51:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 114,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "UnaryOperation",
+                    "operator": "--",
+                    "prefix": false,
+                    "src": "1146:18:0",
+                    "subExpression": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 111,
+                        "name": "offerIds",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 46,
+                        "src": "1146:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                          "typeString": "uint64[] storage ref"
+                        }
+                      },
+                      "id": 113,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "1146:15:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 115,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1146:18:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 119,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "UnaryOperation",
+                    "operator": "delete",
+                    "prefix": true,
+                    "src": "1170:23:0",
+                    "subExpression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 116,
+                        "name": "offers",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 56,
+                        "src": "1177:6:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                          "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                        }
+                      },
+                      "id": 118,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 117,
+                        "name": "_offerId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 90,
+                        "src": "1184:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "1177:16:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Offer_$26_storage",
+                        "typeString": "struct Adversary.Offer storage ref"
+                      }
+                    },
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 120,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1170:23:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 128,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "baseExpression": {
+                          "argumentTypes": null,
+                          "id": 121,
+                          "name": "offers",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 56,
+                          "src": "1199:6:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                            "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                          }
+                        },
+                        "id": 125,
+                        "indexExpression": {
+                          "argumentTypes": null,
+                          "baseExpression": {
+                            "argumentTypes": null,
+                            "id": 122,
+                            "name": "offerIds",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 46,
+                            "src": "1206:8:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                              "typeString": "uint64[] storage ref"
+                            }
+                          },
+                          "id": 124,
+                          "indexExpression": {
+                            "argumentTypes": null,
+                            "id": 123,
+                            "name": "listIndex",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 94,
+                            "src": "1215:9:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "1206:19:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint64",
+                            "typeString": "uint64"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "1199:27:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Offer_$26_storage",
+                          "typeString": "struct Adversary.Offer storage ref"
+                        }
+                      },
+                      "id": 126,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "listIndex",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 25,
+                      "src": "1199:37:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 127,
+                      "name": "listIndex",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 94,
+                      "src": "1239:9:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1199:49:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 129,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1199:49:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 131,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "_deleteOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 91,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 90,
+                  "name": "_offerId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 131,
+                  "src": "1008:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint64",
+                    "typeString": "uint64"
+                  },
+                  "typeName": {
+                    "id": 89,
+                    "name": "uint64",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1008:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint64",
+                      "typeString": "uint64"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1007:17:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 92,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1034:0:0"
+            },
+            "scope": 155,
+            "src": "986:267:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 153,
+              "nodeType": "Block",
+              "src": "1304:135:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 143,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 137,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 341,
+                            "src": "1318:3:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 138,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1318:10:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "baseExpression": {
+                              "argumentTypes": null,
+                              "id": 139,
+                              "name": "offers",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 56,
+                              "src": "1332:6:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                                "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                              }
+                            },
+                            "id": 141,
+                            "indexExpression": {
+                              "argumentTypes": null,
+                              "id": 140,
+                              "name": "_offerId",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 133,
+                              "src": "1339:8:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint64",
+                                "typeString": "uint64"
+                              }
+                            },
+                            "isConstant": false,
+                            "isLValue": true,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "nodeType": "IndexAccess",
+                            "src": "1332:16:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_struct$_Offer_$26_storage",
+                              "typeString": "struct Adversary.Offer storage ref"
+                            }
+                          },
+                          "id": 142,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "maker",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 19,
+                          "src": "1332:22:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "1318:36:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 136,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        344,
+                        345
+                      ],
+                      "referencedDeclaration": 344,
+                      "src": "1310:7:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 144,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1310:45:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 145,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1310:45:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 147,
+                        "name": "_offerId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 133,
+                        "src": "1374:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      ],
+                      "id": 146,
+                      "name": "_deleteOffer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 131,
+                      "src": "1361:12:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_uint64_$returns$__$",
+                        "typeString": "function (uint64)"
+                      }
+                    },
+                    "id": 148,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1361:22:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 149,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1361:22:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 150,
+                      "name": "RemovedOffer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 13,
+                      "src": "1420:12:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 151,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1420:14:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 152,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1420:14:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 154,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "deleteOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 134,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 133,
+                  "name": "_offerId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 154,
+                  "src": "1278:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint64",
+                    "typeString": "uint64"
+                  },
+                  "typeName": {
+                    "id": 132,
+                    "name": "uint64",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1278:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint64",
+                      "typeString": "uint64"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1277:17:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 135,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1304:0:0"
+            },
+            "scope": 155,
+            "src": "1257:182:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 156,
+        "src": "105:1336:0"
+      }
+    ],
+    "src": "0:1442:0"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/Adversary.sol",
+    "exportedSymbols": {
+      "Adversary": [
+        155
+      ]
+    },
+    "id": 156,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".23"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:0"
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/Ownable.sol",
+        "file": "./Ownable.sol",
+        "id": 2,
+        "nodeType": "ImportDirective",
+        "scope": 156,
+        "sourceUnit": 233,
+        "src": "26:23:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/SafeMath.sol",
+        "file": "./SafeMath.sol",
+        "id": 3,
+        "nodeType": "ImportDirective",
+        "scope": 156,
+        "sourceUnit": 327,
+        "src": "50:24:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/mark/TruffleProjects/AdversaryVue/contracts/DaiInterface.sol",
+        "file": "./DaiInterface.sol",
+        "id": 4,
+        "nodeType": "ImportDirective",
+        "scope": 156,
+        "sourceUnit": 177,
+        "src": "75:28:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 5,
+              "name": "DaiInterface",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 176,
+              "src": "127:12:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_DaiInterface_$176",
+                "typeString": "contract DaiInterface"
+              }
+            },
+            "id": 6,
+            "nodeType": "InheritanceSpecifier",
+            "src": "127:12:0"
+          }
+        ],
+        "contractDependencies": [
+          176,
+          232
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 155,
+        "linearizedBaseContracts": [
+          155,
+          176,
+          232
+        ],
+        "name": "Adversary",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 9,
+            "libraryName": {
+              "contractScope": null,
+              "id": 7,
+              "name": "SafeMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 326,
+              "src": "151:8:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SafeMath_$326",
+                "typeString": "library SafeMath"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "145:27:0",
+            "typeName": {
+              "id": 8,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "164:7:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 11,
+            "name": "NewOffer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 10,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "190:2:0"
+            },
+            "src": "176:17:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 13,
+            "name": "RemovedOffer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 12,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "214:2:0"
+            },
+            "src": "196:21:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 15,
+            "name": "ClaimedOffer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 14,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "238:2:0"
+            },
+            "src": "220:21:0"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 17,
+            "name": "FinalisedOffer",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 16,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "264:2:0"
+            },
+            "src": "244:23:0"
+          },
+          {
+            "canonicalName": "Adversary.Offer",
+            "id": 26,
+            "members": [
+              {
+                "constant": false,
+                "id": 19,
+                "name": "maker",
+                "nodeType": "VariableDeclaration",
+                "scope": 26,
+                "src": "290:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 18,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "290:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21,
+                "name": "currency",
+                "nodeType": "VariableDeclaration",
+                "scope": 26,
+                "src": "309:15:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 20,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "309:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 23,
+                "name": "dai",
+                "nodeType": "VariableDeclaration",
+                "scope": 26,
+                "src": "330:8:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 22,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "330:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 25,
+                "name": "listIndex",
+                "nodeType": "VariableDeclaration",
+                "scope": 26,
+                "src": "344:14:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 24,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "344:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Offer",
+            "nodeType": "StructDefinition",
+            "scope": 155,
+            "src": "271:92:0",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "Adversary.Escrow",
+            "id": 43,
+            "members": [
+              {
+                "constant": false,
+                "id": 28,
+                "name": "maker",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "387:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 27,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "387:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 30,
+                "name": "taker",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "406:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 29,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "406:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 32,
+                "name": "dai",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "425:8:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 31,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "425:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 34,
+                "name": "earliestTermination",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "439:24:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 33,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "439:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 36,
+                "name": "id",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "469:7:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 35,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "469:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 38,
+                "name": "startPriceCents",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "482:22:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint32",
+                  "typeString": "uint32"
+                },
+                "typeName": {
+                  "id": 37,
+                  "name": "uint32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "482:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 40,
+                "name": "milliMarginRatio",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "510:23:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint32",
+                  "typeString": "uint32"
+                },
+                "typeName": {
+                  "id": 39,
+                  "name": "uint32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "510:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 42,
+                "name": "kiloMinimumPriceDeltaRatio",
+                "nodeType": "VariableDeclaration",
+                "scope": 43,
+                "src": "539:33:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint32",
+                  "typeString": "uint32"
+                },
+                "typeName": {
+                  "id": 41,
+                  "name": "uint32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "539:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Escrow",
+            "nodeType": "StructDefinition",
+            "scope": 155,
+            "src": "367:210:0",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 46,
+            "name": "offerIds",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "581:24:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+              "typeString": "uint64[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 44,
+                "name": "uint64",
+                "nodeType": "ElementaryTypeName",
+                "src": "581:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint64",
+                  "typeString": "uint64"
+                }
+              },
+              "id": 45,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "581:8:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_uint64_$dyn_storage_ptr",
+                "typeString": "uint64[]"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 49,
+            "name": "escrowIds",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "609:25:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+              "typeString": "uint64[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 47,
+                "name": "uint64",
+                "nodeType": "ElementaryTypeName",
+                "src": "609:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint64",
+                  "typeString": "uint64"
+                }
+              },
+              "id": 48,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "609:8:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_uint64_$dyn_storage_ptr",
+                "typeString": "uint64[]"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 52,
+            "name": "currentId",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "638:27:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint64",
+              "typeString": "uint64"
+            },
+            "typeName": {
+              "id": 50,
+              "name": "uint64",
+              "nodeType": "ElementaryTypeName",
+              "src": "638:6:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint64",
+                "typeString": "uint64"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "30",
+              "id": 51,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "664:1:0",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_0_by_1",
+                "typeString": "int_const 0"
+              },
+              "value": "0"
+            },
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 56,
+            "name": "offers",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "670:39:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+              "typeString": "mapping(uint64 => struct Adversary.Offer)"
+            },
+            "typeName": {
+              "id": 55,
+              "keyType": {
+                "id": 53,
+                "name": "uint64",
+                "nodeType": "ElementaryTypeName",
+                "src": "679:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint64",
+                  "typeString": "uint64"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "670:25:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                "typeString": "mapping(uint64 => struct Adversary.Offer)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 54,
+                "name": "Offer",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 26,
+                "src": "689:5:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Offer_$26_storage_ptr",
+                  "typeString": "struct Adversary.Offer"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 60,
+            "name": "escrows",
+            "nodeType": "VariableDeclaration",
+            "scope": 155,
+            "src": "713:41:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Escrow_$43_storage_$",
+              "typeString": "mapping(uint64 => struct Adversary.Escrow)"
+            },
+            "typeName": {
+              "id": 59,
+              "keyType": {
+                "id": 57,
+                "name": "uint64",
+                "nodeType": "ElementaryTypeName",
+                "src": "722:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint64",
+                  "typeString": "uint64"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "713:26:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Escrow_$43_storage_$",
+                "typeString": "mapping(uint64 => struct Adversary.Escrow)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 58,
+                "name": "Escrow",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 43,
+                "src": "732:6:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Escrow_$43_storage_ptr",
+                  "typeString": "struct Adversary.Escrow"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 87,
+              "nodeType": "Block",
+              "src": "817:165:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 82,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 67,
+                        "name": "offers",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 56,
+                        "src": "877:6:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                          "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                        }
+                      },
+                      "id": 69,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 68,
+                        "name": "currentId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 52,
+                        "src": "884:9:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "877:17:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Offer_$26_storage",
+                        "typeString": "struct Adversary.Offer storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 71,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 341,
+                            "src": "903:3:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 72,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "903:10:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 73,
+                          "name": "_currency",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 62,
+                          "src": "915:9:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_string_memory_ptr",
+                            "typeString": "string memory"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 74,
+                          "name": "_dai",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 64,
+                          "src": "926:4:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "commonType": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          "id": 80,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftExpression": {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "id": 77,
+                                "name": "currentId",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 52,
+                                "src": "946:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint64",
+                                  "typeString": "uint64"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_uint64",
+                                  "typeString": "uint64"
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": null,
+                                "id": 75,
+                                "name": "offerIds",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 46,
+                                "src": "932:8:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                                  "typeString": "uint64[] storage ref"
+                                }
+                              },
+                              "id": 76,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "memberName": "push",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": null,
+                              "src": "932:13:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_arraypush_nonpayable$_t_uint64_$returns$_t_uint256_$",
+                                "typeString": "function (uint64) returns (uint256)"
+                              }
+                            },
+                            "id": 78,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "932:24:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "nodeType": "BinaryOperation",
+                          "operator": "-",
+                          "rightExpression": {
+                            "argumentTypes": null,
+                            "hexValue": "31",
+                            "id": 79,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "number",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "959:1:0",
+                            "subdenomination": null,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_rational_1_by_1",
+                              "typeString": "int_const 1"
+                            },
+                            "value": "1"
+                          },
+                          "src": "932:28:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          },
+                          {
+                            "typeIdentifier": "t_string_memory_ptr",
+                            "typeString": "string memory"
+                          },
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          },
+                          {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        ],
+                        "id": 70,
+                        "name": "Offer",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 26,
+                        "src": "897:5:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_struct$_Offer_$26_storage_ptr_$",
+                          "typeString": "type(struct Adversary.Offer storage pointer)"
+                        }
+                      },
+                      "id": 81,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "structConstructorCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "897:64:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Offer_$26_memory",
+                        "typeString": "struct Adversary.Offer memory"
+                      }
+                    },
+                    "src": "877:84:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Offer_$26_storage",
+                      "typeString": "struct Adversary.Offer storage ref"
+                    }
+                  },
+                  "id": 83,
+                  "nodeType": "ExpressionStatement",
+                  "src": "877:84:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 84,
+                      "name": "NewOffer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 11,
+                      "src": "967:8:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 85,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "967:10:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 86,
+                  "nodeType": "ExpressionStatement",
+                  "src": "967:10:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 88,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "createOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 65,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 62,
+                  "name": "_currency",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88,
+                  "src": "781:16:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 61,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "781:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 64,
+                  "name": "_dai",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88,
+                  "src": "799:9:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 63,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "799:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "780:29:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 66,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "817:0:0"
+            },
+            "scope": 155,
+            "src": "760:222:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 130,
+              "nodeType": "Block",
+              "src": "1034:219:0",
+              "statements": [
+                {
+                  "assignments": [
+                    94
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 94,
+                      "name": "listIndex",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 131,
+                      "src": "1040:14:0",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 93,
+                        "name": "uint",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "1040:4:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 99,
+                  "initialValue": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 95,
+                        "name": "offers",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 56,
+                        "src": "1057:6:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                          "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                        }
+                      },
+                      "id": 97,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 96,
+                        "name": "_offerId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 90,
+                        "src": "1064:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1057:16:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Offer_$26_storage",
+                        "typeString": "struct Adversary.Offer storage ref"
+                      }
+                    },
+                    "id": 98,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "listIndex",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 25,
+                    "src": "1057:26:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1040:43:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 109,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 100,
+                        "name": "offerIds",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 46,
+                        "src": "1089:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                          "typeString": "uint64[] storage ref"
+                        }
+                      },
+                      "id": 102,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 101,
+                        "name": "listIndex",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 94,
+                        "src": "1098:9:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "1089:19:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint64",
+                        "typeString": "uint64"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 103,
+                        "name": "offerIds",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 46,
+                        "src": "1111:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                          "typeString": "uint64[] storage ref"
+                        }
+                      },
+                      "id": 108,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 107,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 104,
+                            "name": "offerIds",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 46,
+                            "src": "1120:8:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                              "typeString": "uint64[] storage ref"
+                            }
+                          },
+                          "id": 105,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "length",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1120:15:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "-",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "hexValue": "31",
+                          "id": 106,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "1138:1:0",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_rational_1_by_1",
+                            "typeString": "int_const 1"
+                          },
+                          "value": "1"
+                        },
+                        "src": "1120:19:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "IndexAccess",
+                      "src": "1111:29:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint64",
+                        "typeString": "uint64"
+                      }
+                    },
+                    "src": "1089:51:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint64",
+                      "typeString": "uint64"
+                    }
+                  },
+                  "id": 110,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1089:51:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 114,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "UnaryOperation",
+                    "operator": "--",
+                    "prefix": false,
+                    "src": "1146:18:0",
+                    "subExpression": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 111,
+                        "name": "offerIds",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 46,
+                        "src": "1146:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                          "typeString": "uint64[] storage ref"
+                        }
+                      },
+                      "id": 113,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "1146:15:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 115,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1146:18:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 119,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "UnaryOperation",
+                    "operator": "delete",
+                    "prefix": true,
+                    "src": "1170:23:0",
+                    "subExpression": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 116,
+                        "name": "offers",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 56,
+                        "src": "1177:6:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                          "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                        }
+                      },
+                      "id": 118,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 117,
+                        "name": "_offerId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 90,
+                        "src": "1184:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "1177:16:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Offer_$26_storage",
+                        "typeString": "struct Adversary.Offer storage ref"
+                      }
+                    },
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 120,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1170:23:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 128,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "expression": {
+                        "argumentTypes": null,
+                        "baseExpression": {
+                          "argumentTypes": null,
+                          "id": 121,
+                          "name": "offers",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 56,
+                          "src": "1199:6:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                            "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                          }
+                        },
+                        "id": 125,
+                        "indexExpression": {
+                          "argumentTypes": null,
+                          "baseExpression": {
+                            "argumentTypes": null,
+                            "id": 122,
+                            "name": "offerIds",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 46,
+                            "src": "1206:8:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_array$_t_uint64_$dyn_storage",
+                              "typeString": "uint64[] storage ref"
+                            }
+                          },
+                          "id": 124,
+                          "indexExpression": {
+                            "argumentTypes": null,
+                            "id": 123,
+                            "name": "listIndex",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 94,
+                            "src": "1215:9:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "1206:19:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint64",
+                            "typeString": "uint64"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "1199:27:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Offer_$26_storage",
+                          "typeString": "struct Adversary.Offer storage ref"
+                        }
+                      },
+                      "id": 126,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "listIndex",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 25,
+                      "src": "1199:37:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 127,
+                      "name": "listIndex",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 94,
+                      "src": "1239:9:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1199:49:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 129,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1199:49:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 131,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "_deleteOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 91,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 90,
+                  "name": "_offerId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 131,
+                  "src": "1008:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint64",
+                    "typeString": "uint64"
+                  },
+                  "typeName": {
+                    "id": 89,
+                    "name": "uint64",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1008:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint64",
+                      "typeString": "uint64"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1007:17:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 92,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1034:0:0"
+            },
+            "scope": 155,
+            "src": "986:267:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 153,
+              "nodeType": "Block",
+              "src": "1304:135:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 143,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 137,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 341,
+                            "src": "1318:3:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 138,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "1318:10:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "baseExpression": {
+                              "argumentTypes": null,
+                              "id": 139,
+                              "name": "offers",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 56,
+                              "src": "1332:6:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_mapping$_t_uint64_$_t_struct$_Offer_$26_storage_$",
+                                "typeString": "mapping(uint64 => struct Adversary.Offer storage ref)"
+                              }
+                            },
+                            "id": 141,
+                            "indexExpression": {
+                              "argumentTypes": null,
+                              "id": 140,
+                              "name": "_offerId",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 133,
+                              "src": "1339:8:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint64",
+                                "typeString": "uint64"
+                              }
+                            },
+                            "isConstant": false,
+                            "isLValue": true,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "nodeType": "IndexAccess",
+                            "src": "1332:16:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_struct$_Offer_$26_storage",
+                              "typeString": "struct Adversary.Offer storage ref"
+                            }
+                          },
+                          "id": 142,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "maker",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 19,
+                          "src": "1332:22:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "1318:36:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 136,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        344,
+                        345
+                      ],
+                      "referencedDeclaration": 344,
+                      "src": "1310:7:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 144,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1310:45:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 145,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1310:45:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 147,
+                        "name": "_offerId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 133,
+                        "src": "1374:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint64",
+                          "typeString": "uint64"
+                        }
+                      ],
+                      "id": 146,
+                      "name": "_deleteOffer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 131,
+                      "src": "1361:12:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_uint64_$returns$__$",
+                        "typeString": "function (uint64)"
+                      }
+                    },
+                    "id": 148,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1361:22:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 149,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1361:22:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 150,
+                      "name": "RemovedOffer",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 13,
+                      "src": "1420:12:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 151,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "1420:14:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 152,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1420:14:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 154,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "deleteOffer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 134,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 133,
+                  "name": "_offerId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 154,
+                  "src": "1278:15:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint64",
+                    "typeString": "uint64"
+                  },
+                  "typeName": {
+                    "id": 132,
+                    "name": "uint64",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1278:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint64",
+                      "typeString": "uint64"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1277:17:0"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 135,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1304:0:0"
+            },
+            "scope": 155,
+            "src": "1257:182:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 156,
+        "src": "105:1336:0"
+      }
+    ],
+    "src": "0:1442:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.23+commit.124ca40d.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-04-22T10:50:07.276Z"
+}
