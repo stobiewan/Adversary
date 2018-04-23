@@ -12,6 +12,10 @@ contract DaiInterface is Ownable {
 
   DaiContractInterface contractInterface;
 
+  function payDai(address to, uint dai) internal {
+    
+  }
+
   // modifier onlyOwnerOf(uint _zombieId) {
   //   require(msg.sender == zombieToOwner[_zombieId]);
   //   _;
@@ -47,4 +51,3 @@ contract DaiInterface is Ownable {
   //   feedAndMultiply(_zombieId, kittyDna, "kitty");
   // }
 }
-
