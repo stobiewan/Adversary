@@ -13,7 +13,7 @@ contract DaiTransferrer is Ownable {
   DaiInterface daiContract;
 
   function transferDai(address _src, address _dst, uint _dai) internal {
-    bool success = daiContract.transferFrom(_src, _dst, _dai);
+    require(daiContract.transferFrom(_src, _dst, _dai));
   }
 
   function setDaiContractAddress(address _address) external onlyOwner {
