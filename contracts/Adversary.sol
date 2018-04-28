@@ -85,6 +85,14 @@ contract Adversary is DaiTransferrer, usingOraclize {
     _deleteOffer(_offerId);
   }
 
+  function _deleteEscrow(uint64 _escrowId) internal {
+    uint listIndex = escrows[_escrowId].listIndex;
+    escrowIds[listIndex] = escrowIds[escrowIds.length - 1];
+    escrowIds.length --;
+    delete escrows[_escrowId];
+    escrows[escrowIds[listIndex]].listIndex = listIndex;
+  }
+
   function createEscrow(uint64 _offerId) public {
     if (oraclize_getPrice("URL") > this.balance) {
         LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
@@ -146,7 +154,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
       transferDai(address(this), escrow.maker, payoutForShort);
       transferDai(address(this), escrow.taker, payoutForLong);
     }
-    /* TODO delete escrow item in map and array and make sure same for offers. */
+    _deleteEscrow(_pendingClaim.escrowId);
     emit TradeCompleted();
   }
 }
