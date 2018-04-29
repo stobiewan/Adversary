@@ -3,7 +3,7 @@ pragma solidity ^0.4.23;
 import "./Ownable.sol";
 import "./SafeMath.sol";
 import "./DaiInterface.sol";
-import "./oraclizeAPI_0.5.sol";
+import "./oraclizeAPI_0_5.sol";
 
 contract Adversary is DaiTransferrer, usingOraclize {
 
