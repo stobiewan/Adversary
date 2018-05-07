@@ -46,7 +46,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
 
   uint public margin = 2;
   uint public daiDecimals = 18;
-  uint public minimumDai = 10 ** daiDecimals;
+  uint public minimumDai = 1;  // TODO calc dai conversion, uint to 10 dai
   uint public createEscrowGasLimit = 200000;  // TODO calculate in testing
   uint public claimEscrowGasLimit = 200000;  // TODO calculate in testing
   uint64[] public offerIds;
@@ -57,6 +57,14 @@ contract Adversary is DaiTransferrer, usingOraclize {
   mapping (uint64 => Escrow) public escrows;
   mapping (bytes32 => PendingTake) public pendingTakes;
   mapping (bytes32 => PendingClaim) public pendingClaims;
+
+  function getNumOffers() external view returns (uint length) {
+    return offerIds.length;
+  }
+
+  function getNumEscrows() external view returns (uint length) {
+    return escrowIds.length;
+  }
 
   function setOracleResponseGasPrice(uint priceInWei) external onlyOwner {
     oraclize_setCustomGasPrice(priceInWei);
@@ -73,9 +81,9 @@ contract Adversary is DaiTransferrer, usingOraclize {
   function _deleteOffer(uint64 _offerId) internal {
     uint listIndex = offers[_offerId].listIndex;
     offerIds[listIndex] = offerIds[offerIds.length - 1];
-    offerIds.length --;
-    delete offers[_offerId];
     offers[offerIds[listIndex]].listIndex = listIndex;
+    delete offers[_offerId];
+    offerIds.length --;
     emit OfferDeleted();
   }
 
@@ -88,9 +96,9 @@ contract Adversary is DaiTransferrer, usingOraclize {
   function _deleteEscrow(uint64 _escrowId) internal {
     uint listIndex = escrows[_escrowId].listIndex;
     escrowIds[listIndex] = escrowIds[escrowIds.length - 1];
+    escrows[escrowIds[listIndex]].listIndex = listIndex;
     escrowIds.length --;
     delete escrows[_escrowId];
-    escrows[escrowIds[listIndex]].listIndex = listIndex;
   }
 
   function createEscrow(uint64 _offerId) public {
