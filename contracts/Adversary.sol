@@ -46,7 +46,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
 
   uint public margin = 2;
   uint public daiDecimals = 18;
-  uint public minimumDai = 1;  // TODO calc dai conversion, uint to 10 dai
+  uint public minimumDai = 1;  // TODO calc dai conversion, uint to 1 dai
   uint public createEscrowGasLimit = 200000;  // TODO calculate in testing
   uint public claimEscrowGasLimit = 200000;  // TODO calculate in testing
   uint64[] public offerIds;

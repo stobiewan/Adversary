@@ -14,10 +14,6 @@ contract('Offers test', async (offers) => {
   it("mint fake Dai and distribute", async () => {
      adversaryInstance = await Adversary.deployed();
      fakeDaiInstance = await DSToken.deployed();
-     var result = await adversaryInstance.setDaiContractAddress(fakeDaiInstance.address);
-     result = await fakeDaiInstance.mint(1000, {from: account_one});
-     result = await fakeDaiInstance.push(account_two, 100, {from: account_one});
-     result = await fakeDaiInstance.push(account_three, 100, {from: account_one});
      let accountOneDai = await fakeDaiInstance.balanceOf.call(account_one);
      let accountTwoDai = await fakeDaiInstance.balanceOf.call(account_two);
      let accountThreeDai = await fakeDaiInstance.balanceOf.call(account_three);
@@ -80,5 +76,5 @@ contract('Offers test', async (offers) => {
   });
 });
 
-// TODO add start of test to migration, allow termination to be price above or below after date etc
+// TODO allow termination to be price above or below after date etc
 // TODO test required failures like txs from wrong addresses etc.
