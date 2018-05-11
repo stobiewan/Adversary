@@ -16,7 +16,7 @@ const asyncSetup = async function asyncSetup() {
 }
 
 
-module.exports = function(deployer) {
+module.exports = function(deployer, network) {
   if(network == 'development'){
     deployer.deploy(Users);
     deployer.deploy(fakeDai, "FakeDai");
