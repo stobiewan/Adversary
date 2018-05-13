@@ -19,6 +19,9 @@ then run it before starting tests with "node bridge -H localhost:7545 -a 9 --dev
 seemed lots of people had trouble, you also need something like apt build essential or VS2013 or 15 etc.
 
 
+I've hopefully removed node_modules from repo so you'll need to also do npm install to get started.
+
+
 To run tests which use async you need:
 Node ≥ 7.6, confirm by entering node -v in command line
 npm ≥ 4, confirm by entering npm -v in command line
