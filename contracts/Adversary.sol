@@ -47,8 +47,9 @@ contract Adversary is DaiTransferrer, usingOraclize {
   uint public margin = 2;
   uint public daiDecimals = 18;
   uint public minimumDai = 1;  // TODO calc dai conversion, uint to 1 dai
-  uint public createEscrowGasLimit = 200000;  // TODO calculate in testing
-  uint public claimEscrowGasLimit = 200000;  // TODO calculate in testing
+  uint public createEscrowGasLimit = 300000;  // TODO set once code is finalised
+  uint public claimEscrowGasLimit = 400000;  // TODO calculate in testing
+  uint public oracleGasPrice = 20000000000;
   uint64[] public offerIds;
   uint64[] public escrowIds;
   uint64 public currentId = 1;
@@ -66,8 +67,26 @@ contract Adversary is DaiTransferrer, usingOraclize {
     return escrowIds.length;
   }
 
+  function getEthRequiredForEscrow() external view returns (uint ethAmount) {
+    return createEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 1000;
+  }
+
+  function getEthRequiredForClaim() external view returns (uint ethAmount) {
+    return claimEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 10000;
+  }
+
   function setOracleResponseGasPrice(uint priceInWei) external onlyOwner {
     oraclize_setCustomGasPrice(priceInWei);
+    oracleGasPrice = priceInWei;
+  }
+
+  function withdrawEth() external onlyOwner {
+    msg.sender.send(address(this).balance);
+  }
+
+  function withdrawDai() external onlyOwner {
+    //TODO this allows stealing from existing escrows, but also allows fixing if something goes wrong. Only keep latter.
+    transferDai(address(this), msg.sender, getDaiBalance(address(this)));
   }
 
   function createOffer(bool _long, string _currency, uint _dai) public {
@@ -107,19 +126,19 @@ contract Adversary is DaiTransferrer, usingOraclize {
     } else {
         emit LogNewOraclizeQuery("Oraclize query was sent, standing by for the answer..");
         bytes32 queryId = oraclize_query("URL", strConcat("json(https://www.bitstamp.net/api/v2/ticker/",
-                                         offers[_offerId].currency, "ethusd/).last"), createEscrowGasLimit);
+                                         offers[_offerId].currency, ").last"), createEscrowGasLimit);
         pendingTakes[queryId] = PendingTake(msg.sender, _offerId);
     }
   }
 
-  function claimEscrow(uint64 _offerId) public {
+  function claimEscrow(uint64 _escrowId) public {
     if (oraclize_getPrice("URL") > address(this).balance) {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
         emit LogNewOraclizeQuery("Oraclize query was sent, standing by for the answer..");
         bytes32 queryId = oraclize_query("URL", strConcat("json(https://www.bitstamp.net/api/v2/ticker/",
-                                         offers[_offerId].currency, "ethusd/).last"), createEscrowGasLimit);
-        pendingClaims[queryId] = PendingClaim(msg.sender, _offerId);
+                                         escrows[_escrowId].currency, ").last"), claimEscrowGasLimit);
+        pendingClaims[queryId] = PendingClaim(msg.sender, _escrowId);
     }
   }
 
@@ -133,15 +152,17 @@ contract Adversary is DaiTransferrer, usingOraclize {
         completeEscrowClaim(pendingClaims[myid], result);
       }
     }
-    revert();
   }
 
   function completeEscrowCreation(PendingTake _take, string priceResult) internal {  // TODO is result a string?
-    Offer memory offer = offers[_take.offerId];
-    require(offer.dai > 0);
+    Offer offer = offers[_take.offerId];
+    require(offer.dai > 0);  // check it is a real initialised offer
     transferDai(_take.taker, address(this), offer.dai);
-    escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai * 99 / 50,
-                                escrowIds.push(currentId) - 1, parseInt(priceResult, 100));  // todo str to int
+
+    uint numerator = offer.dai.mul(99);
+    uint totalForEscrow = numerator.div(50);
+    escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, totalForEscrow,
+                                escrowIds.push(currentId) - 1, parseInt(priceResult, 2));
     currentId++;
     _deleteOffer(_take.offerId);
     emit NewEscrow();
@@ -150,7 +171,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
   function completeEscrowClaim(PendingClaim _pendingClaim, string priceResult) internal {
     Escrow memory escrow = escrows[_pendingClaim.escrowId];
     require(_pendingClaim.claimer == escrow.maker || _pendingClaim.claimer == escrow.taker);
-    uint finalPriceCents = parseInt(priceResult, 100);  // TODO what happens with decimal
+    uint finalPriceCents = parseInt(priceResult, 2);  // TODO what happens with decimal
     uint payoutForLong = (escrow.dai * ((finalPriceCents - escrow.startPriceCents) * margin + escrow.startPriceCents)) /
                          (2 * escrow.startPriceCents);
     uint payoutForShort = escrow.dai - payoutForLong;
@@ -165,4 +186,6 @@ contract Adversary is DaiTransferrer, usingOraclize {
     _deleteEscrow(_pendingClaim.escrowId);
     emit TradeCompleted();
   }
+
+  function() public payable { }
 }

@@ -4,8 +4,8 @@ import "./Ownable.sol";
 import "./SafeMath.sol";
 
 contract DaiInterface {
-  // function transferFrom(address src, address dst, uint wad) public stoppable returns (bool);  TODO is stopable required
   function transferFrom(address src, address dst, uint wad) public returns (bool);
+  function balanceOf(address src) public view returns (uint);
 }
 
 contract DaiTransferrer is Ownable {
@@ -18,5 +18,9 @@ contract DaiTransferrer is Ownable {
 
   function setDaiContractAddress(address _address) external onlyOwner {
     daiContract = DaiInterface(_address);
+  }
+
+  function getDaiBalance(address _address) public returns (uint) {
+    return daiContract.balanceOf(_address);
   }
 }

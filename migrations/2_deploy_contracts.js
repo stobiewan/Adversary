@@ -6,10 +6,11 @@ var adversary = artifacts.require("./Adversary");
 const asyncSetup = async function asyncSetup(accounts) {
   adversaryInstance = await adversary.deployed();
   fakeDaiInstance = await fakeDai.deployed();
-  var result = await adversaryInstance.setDaiContractAddress(fakeDaiInstance.address);
-  result = await fakeDaiInstance.mint(1000, {from: accounts[0]});
-  result = await fakeDaiInstance.push(accounts[1], 100, {from: accounts[0]});
-  result = await fakeDaiInstance.push(accounts[2], 100, {from: accounts[0]});
+  await adversaryInstance.setDaiContractAddress(fakeDaiInstance.address);
+  await fakeDaiInstance.mint(1000, {from: accounts[0]});
+  await fakeDaiInstance.push(accounts[1], 100, {from: accounts[0]});
+  await fakeDaiInstance.push(accounts[2], 100, {from: accounts[0]});
+  // await adversaryInstance.setOracleResponseGasPrice(1000000000, {from: accounts[0]});
 }
 
 
