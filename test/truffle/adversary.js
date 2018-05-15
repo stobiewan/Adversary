@@ -7,6 +7,7 @@ contract('Offers test', async (accounts) => {
   var fakeDaiInstance;
   const offerMakerIndex = 0;
   const offerDaiIndex = 3;
+  const escrowDaiIndex = 4;
 
   it("check fake Dai has been setup", async () => {
      adversaryInstance = await Adversary.deployed();
@@ -72,7 +73,7 @@ contract('Offers test', async (accounts) => {
   });
 
   it("Create escrows", async function() {
-    this.timeout(25 * 1000);
+    this.timeout(35 * 1000);
     var numEscrows = 0;
     //take up the first offer made by account zero with account[3] which still has 30 dai approved
     let id = await adversaryInstance.offerIds.call(0);
@@ -97,10 +98,17 @@ contract('Offers test', async (accounts) => {
   });
 
   it("Claim escrow", async function() {
-    this.timeout(30 * 1000);
-    var numEscrows = 1;
-    //take up the only escrow as maker, account[0]
+    this.timeout(35 * 1000);
+    //take up the only escrow as maker, account[0]. Taker is acount[2]
     let id = await adversaryInstance.escrowIds.call(0);
+    var numEscrows = 1;
+    var account0DaiBefore = await fakeDaiInstance.balanceOf.call(accounts[0]);
+    var account2DaiBefore = await fakeDaiInstance.balanceOf.call(accounts[2]);
+    let escrow = await adversaryInstance.escrows.call(id);
+    var escrowDai = escrow[escrowDaiIndex];
+    console.log("a0b is ", account0DaiBefore, ' a0btn = ', account0DaiBefore.toNumber(), " ed is ", escrowDai);
+    var sumBefore = account0DaiBefore.toNumber() + account2DaiBefore.toNumber() + escrowDai.toNumber();
+
     const TradeCompleted = adversaryInstance.TradeCompleted();
     // send ether to contract so it can pay oracle
     let ethForOracle = await adversaryInstance.getEthRequiredForClaim.call();
@@ -118,6 +126,10 @@ contract('Offers test', async (accounts) => {
       });
     });
     const resultNumEscrows = await checkForPrice;
+    var account0DaiAfter = await fakeDaiInstance.balanceOf.call(accounts[0]);
+    var account2DaiAfter = await fakeDaiInstance.balanceOf.call(accounts[2]);
+    var sumAfter = account0DaiAfter.toNumber() + account2DaiAfter.toNumber();
+    assert.equal(sumBefore, sumAfter);
     assert.equal(numEscrows, 0);
   });
 });
