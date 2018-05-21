@@ -25,12 +25,12 @@ contract('Offers test', async (accounts) => {
     await fakeDaiInstance.approve(adversaryInstance.address, 50 * oneDai, {from: accounts[1]});
     await fakeDaiInstance.approve(adversaryInstance.address, 50 * oneDai, {from: accounts[0]});
     await fakeDaiInstance.approve(adversaryInstance.address, 50 * oneDai, {from: accounts[2]});
-    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[0]});
-    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[0]});
-    await adversaryInstance.createOffer(true, 'ethbtc', 10 * oneDai, 0, 0, {from: accounts[0]});
-    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[1]});
-    await adversaryInstance.createOffer(false, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[1]});
-    await adversaryInstance.createOffer(false, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[2]});
+    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 2, 0, 0, {from: accounts[0]});
+    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 2, 0, 0, {from: accounts[0]});
+    await adversaryInstance.createOffer(true, 'ethbtc', 10 * oneDai, 2, 0, 0, {from: accounts[0]});
+    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 2, 0, 0, {from: accounts[1]});
+    await adversaryInstance.createOffer(false, 'ethusd', 10 * oneDai,2,  0, 0, {from: accounts[1]});
+    await adversaryInstance.createOffer(false, 'ethusd', 10 * oneDai,2,  0, 0, {from: accounts[2]});
 
     assert.equal(await fakeDaiInstance.balanceOf.call(adversaryInstance.address), 60 * oneDai);
     assert.equal(await fakeDaiInstance.balanceOf.call(accounts[0]), 770 * oneDai);
@@ -52,7 +52,7 @@ contract('Offers test', async (accounts) => {
     }
     numOffers = await adversaryInstance.getNumOffers.call();
     assert.equal(numOffers, 4);
-    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[2]});
+    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 2, 0, 0, {from: accounts[2]});
     numOffers = await adversaryInstance.getNumOffers.call();
     assert.equal(numOffers, 5);
 

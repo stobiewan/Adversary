@@ -22,6 +22,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     string currency;
     uint dai;
     uint listIndex;
+    uint margin;
     uint positiveDeltaCents;
     uint negativeDeltaCents;
   }
@@ -44,6 +45,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint dai;
     uint listIndex;
     uint startPriceCents;
+    uint margin;
     uint ceilingCents;
     uint floorCents;
   }
@@ -92,11 +94,12 @@ contract Adversary is DaiTransferrer, usingOraclize {
     transferDai(address(this), msg.sender, getDaiBalance(address(this)));
   }
 
-  function createOffer(bool _long, string _currency, uint _dai, uint positiveDeltaCents, uint negativeDeltaCents) external {
+  function createOffer(bool _long, string _currency, uint _dai, uint margin, uint positiveDeltaCents,
+                       uint negativeDeltaCents) external {
     require(_dai >= minimumDai);
     transferDai(msg.sender, address(this), _dai);
-    offers[currentId] = Offer(msg.sender, _long, _currency, _dai, offerIds.push(currentId) - 1, positiveDeltaCents,
-                              negativeDeltaCents);
+    offers[currentId] = Offer(msg.sender, _long, _currency, _dai, offerIds.push(currentId) - 1, margin,
+                              positiveDeltaCents, negativeDeltaCents);
     currentId++;
     emit NewOffer();
   }
@@ -166,7 +169,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     transferDai(_take.taker, address(this), offer.dai);
     uint startPriceCents = parseInt(priceResult, 2);
     escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai.mul(99).div(50),
-                                escrowIds.push(currentId) - 1, startPriceCents,
+                                escrowIds.push(currentId) - 1, startPriceCents, offer.margin,
                                 startPriceCents + offer.positiveDeltaCents, startPriceCents - offer.negativeDeltaCents);
     currentId++;
     _deleteOffer(_take.offerId);
@@ -178,24 +181,33 @@ contract Adversary is DaiTransferrer, usingOraclize {
     require(_pendingClaim.claimer == escrow.maker || _pendingClaim.claimer == escrow.taker);
     uint payoutForMaker = 0;
     uint payoutForTaker = 0;
-    (payoutForMaker, payoutForTaker) = calculateReturns(escrow.ceilingCents, escrow.floorCents, escrow.dai,
-                                                        escrow.startPriceCents, escrow.makerIsLong, priceResult);
+    (payoutForMaker, payoutForTaker) = calculateReturns(escrow.margin, escrow.ceilingCents, escrow.floorCents,
+                                                        escrow.dai, escrow.startPriceCents, escrow.makerIsLong,
+                                                        priceResult);
     transferDai(address(this), escrow.maker, payoutForMaker);
     transferDai(address(this), escrow.taker, payoutForTaker);
     _deleteEscrow(_pendingClaim.escrowId);
     emit TradeCompleted();
   }
 
-  function calculateReturns(uint ceilingCents, uint floorCents, uint daiInEscrow, uint startPriceCents,
-                            bool makerIsLong, string priceResult) public pure returns (uint payoutForMaker,
-                            uint payoutForTaker) {
+  function calculateReturns(uint margin, uint ceilingCents, uint floorCents, uint daiInEscrow,
+                            uint startPriceCents, bool makerIsLong, string priceResult)
+                            public pure returns (uint payoutForMaker, uint payoutForTaker) {
     uint payoutForLong = 0;
     uint payoutForShort = 0;
     uint finalPriceCents = parseInt(priceResult, 2);
-    uint margin = 2;
     if (ceilingCents == floorCents) {
-      payoutForLong = (daiInEscrow * ((finalPriceCents - startPriceCents) * margin + startPriceCents)) /
-                      (2 * startPriceCents);
+      int marginDelta = int(margin) * int(finalPriceCents - startPriceCents);
+      int marginDeltaPlusStart = marginDelta + int(startPriceCents);
+      if (marginDelta > int(startPriceCents)) {
+        payoutForLong = daiInEscrow;
+      }
+      else if (marginDeltaPlusStart < 0) {
+        payoutForLong = 0;
+      }
+      else {
+        payoutForLong = (daiInEscrow * (uint(marginDeltaPlusStart))) / (2 * startPriceCents);
+      }
       payoutForShort = daiInEscrow - payoutForLong;
     }
     else {
