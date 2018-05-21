@@ -48,7 +48,6 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint floorCents;
   }
 
-  uint public margin = 2;
   uint public oneDai = 10 ** 18;
   uint public minimumDai = 10 * oneDai;
   uint public createEscrowGasLimit = 400000;  // TODO set once code is finalised
@@ -71,12 +70,12 @@ contract Adversary is DaiTransferrer, usingOraclize {
     return escrowIds.length;
   }
 
-  function getEthRequiredForEscrow() external view returns (uint ethAmount) {
-    return createEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 1000;
+  function getEthRequiredForEscrow() public view returns (uint ethAmount) {
+    return createEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 1000;  // TODO calculate properly
   }
 
-  function getEthRequiredForClaim() external view returns (uint ethAmount) {
-    return claimEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 10000;
+  function getEthRequiredForClaim() public view returns (uint ethAmount) {
+    return claimEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 10000;  // TODO calculate properly
   }
 
   function setOracleResponseGasPrice(uint priceInWei) external onlyOwner {
@@ -125,7 +124,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
     delete escrows[_escrowId];
   }
 
-  function createEscrow(uint64 _offerId) external {
+  function createEscrow(uint64 _offerId) external payable {
+    require(msg.value >= getEthRequiredForEscrow());  // TODO calculate properly
     if (oraclize_getPrice("URL") > address(this).balance) {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
@@ -136,7 +136,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
     }
   }
 
-  function claimEscrow(uint64 _escrowId) external {
+  function claimEscrow(uint64 _escrowId) external payable {
+    require(msg.value >= getEthRequiredForClaim());  // TODO calculate properly
     if (oraclize_getPrice("URL") > address(this).balance) {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
@@ -165,8 +166,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
     transferDai(_take.taker, address(this), offer.dai);
     uint startPriceCents = parseInt(priceResult, 2);
     escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai.mul(99).div(50),
-                                escrowIds.push(currentId) - 1, startPriceCents, startPriceCents + offer.positiveDeltaCents,
-                                 startPriceCents - offer.negativeDeltaCents);
+                                escrowIds.push(currentId) - 1, startPriceCents,
+                                startPriceCents + offer.positiveDeltaCents, startPriceCents - offer.negativeDeltaCents);
     currentId++;
     _deleteOffer(_take.offerId);
     emit NewEscrow();
@@ -175,33 +176,44 @@ contract Adversary is DaiTransferrer, usingOraclize {
   function completeEscrowClaim(PendingClaim _pendingClaim, string priceResult) internal {
     Escrow memory escrow = escrows[_pendingClaim.escrowId];
     require(_pendingClaim.claimer == escrow.maker || _pendingClaim.claimer == escrow.taker);
+    uint payoutForMaker = 0;
+    uint payoutForTaker = 0;
+    (payoutForMaker, payoutForTaker) = calculateReturns(escrow.ceilingCents, escrow.floorCents, escrow.dai,
+                                                        escrow.startPriceCents, escrow.makerIsLong, priceResult);
+    transferDai(address(this), escrow.maker, payoutForMaker);
+    transferDai(address(this), escrow.taker, payoutForTaker);
+    _deleteEscrow(_pendingClaim.escrowId);
+    emit TradeCompleted();
+  }
+
+  function calculateReturns(uint ceilingCents, uint floorCents, uint daiInEscrow, uint startPriceCents,
+                            bool makerIsLong, string priceResult) public pure returns (uint payoutForMaker,
+                            uint payoutForTaker) {
     uint payoutForLong = 0;
     uint payoutForShort = 0;
     uint finalPriceCents = parseInt(priceResult, 2);
-    if (escrow.ceilingCents == escrow.floorCents) {
-      payoutForLong = (escrow.dai * ((finalPriceCents - escrow.startPriceCents) * margin + escrow.startPriceCents)) /
-                           (2 * escrow.startPriceCents);
-      payoutForShort = escrow.dai - payoutForLong;
+    uint margin = 2;
+    if (ceilingCents == floorCents) {
+      payoutForLong = (daiInEscrow * ((finalPriceCents - startPriceCents) * margin + startPriceCents)) /
+                      (2 * startPriceCents);
+      payoutForShort = daiInEscrow - payoutForLong;
     }
     else {
-      require(finalPriceCents >= escrow.ceilingCents || finalPriceCents <= escrow.floorCents);
-      if (finalPriceCents >= escrow.ceilingCents) {
-        payoutForLong = escrow.dai;
+      require(finalPriceCents >= ceilingCents || finalPriceCents <= floorCents);
+      if (finalPriceCents >= ceilingCents) {
+        payoutForLong = daiInEscrow;
       }
       else {
-        payoutForShort = escrow.dai;
+        payoutForShort = daiInEscrow;
       }
     }
-    if(escrow.makerIsLong) {
-      transferDai(address(this), escrow.maker, payoutForLong);
-      transferDai(address(this), escrow.taker, payoutForShort);
+
+    if(makerIsLong) {
+      return (payoutForLong, payoutForShort);
     }
     else {
-      transferDai(address(this), escrow.maker, payoutForShort);
-      transferDai(address(this), escrow.taker, payoutForLong);
+      return (payoutForShort, payoutForLong);
     }
-    _deleteEscrow(_pendingClaim.escrowId);
-    emit TradeCompleted();
   }
 
   function() public payable { }

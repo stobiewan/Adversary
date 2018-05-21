@@ -79,11 +79,9 @@ contract('Offers test', async (accounts) => {
     //take up the first offer made by account zero with account[3] which still has 30 dai approved
     let id = await adversaryInstance.offerIds.call(0);
     const NewEscrow = adversaryInstance.NewEscrow();
-    // send ether to contract so it can pay oracle
     let ethForOracle = await adversaryInstance.getEthRequiredForEscrow.call();
     ethForOracle = ethForOracle.toNumber();
-    await adversaryInstance.send(ethForOracle, {from: accounts[2]});
-    await adversaryInstance.createEscrow(id, {from: accounts[2]});
+    await adversaryInstance.createEscrow(id, {value: ethForOracle, from: accounts[2]});
     let checkForPrice = new Promise((resolve, reject)  => {
       NewEscrow.watch(async function(error, result) {
         if (error) {
@@ -110,11 +108,9 @@ contract('Offers test', async (accounts) => {
     var sumBefore = account0DaiBefore.toNumber() + account2DaiBefore.toNumber() + escrowDai.toNumber();
 
     const TradeCompleted = adversaryInstance.TradeCompleted();
-    // send ether to contract so it can pay oracle
     let ethForOracle = await adversaryInstance.getEthRequiredForClaim.call();
     ethForOracle = ethForOracle.toNumber();
-    await adversaryInstance.send(ethForOracle, {from: accounts[0]});
-    await adversaryInstance.claimEscrow(id, {from: accounts[2]});
+    await adversaryInstance.claimEscrow(id, {value: ethForOracle, from: accounts[2]});
     let checkForPrice = new Promise((resolve, reject)  => {
       TradeCompleted.watch(async function(error, result) {
         if (error) {
@@ -134,5 +130,4 @@ contract('Offers test', async (accounts) => {
   });
 });
 
-// TODO allow termination when price above x or below y, heaviside.
 // TODO test required failures like txs from wrong addresses etc.
