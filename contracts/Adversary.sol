@@ -25,6 +25,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint margin;
     uint positiveDeltaCents;
     uint negativeDeltaCents;
+    uint lockSeconds;
   }
 
   struct PendingTake {
@@ -48,6 +49,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint margin;
     uint ceilingCents;
     uint floorCents;
+    uint unlockSecond;
   }
 
   uint public oneDai = 10 ** 18;
@@ -95,11 +97,11 @@ contract Adversary is DaiTransferrer, usingOraclize {
   }
 
   function createOffer(bool _long, string _currency, uint _dai, uint margin, uint positiveDeltaCents,
-                       uint negativeDeltaCents) external {
+                       uint negativeDeltaCents, uint lockSeconds) external {
     require(_dai >= minimumDai);
     transferDai(msg.sender, address(this), _dai);
     offers[currentId] = Offer(msg.sender, _long, _currency, _dai, offerIds.push(currentId) - 1, margin,
-                              positiveDeltaCents, negativeDeltaCents);
+                              positiveDeltaCents, negativeDeltaCents, lockSeconds);
     currentId++;
     emit NewOffer();
   }
@@ -170,7 +172,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint startPriceCents = parseInt(priceResult, 2);
     escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai.mul(99).div(50),
                                 escrowIds.push(currentId) - 1, startPriceCents, offer.margin,
-                                startPriceCents + offer.positiveDeltaCents, startPriceCents - offer.negativeDeltaCents);
+                                startPriceCents + offer.positiveDeltaCents, startPriceCents - offer.negativeDeltaCents,
+                                offer.lockSeconds + now);
     currentId++;
     _deleteOffer(_take.offerId);
     emit NewEscrow();
@@ -179,6 +182,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
   function completeEscrowClaim(PendingClaim _pendingClaim, string priceResult) internal {
     Escrow memory escrow = escrows[_pendingClaim.escrowId];
     require(_pendingClaim.claimer == escrow.maker || _pendingClaim.claimer == escrow.taker);
+    require(now > escrow.unlockSecond);
     uint payoutForMaker = 0;
     uint payoutForTaker = 0;
     (payoutForMaker, payoutForTaker) = calculateReturns(escrow.margin, escrow.ceilingCents, escrow.floorCents,
