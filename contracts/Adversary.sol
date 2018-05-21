@@ -160,7 +160,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     }
   }
 
-  function completeEscrowCreation(PendingTake _take, string priceResult) internal {  // TODO is result a string?
+  function completeEscrowCreation(PendingTake _take, string priceResult) internal {
     Offer memory offer = offers[_take.offerId];
     require(offer.dai > 0);  // check it is a real initialised offer
     transferDai(_take.taker, address(this), offer.dai);

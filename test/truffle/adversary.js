@@ -130,4 +130,4 @@ contract('Offers test', async (accounts) => {
   });
 });
 
-// TODO test required failures like txs from wrong addresses etc.
+// TODO test required failures like txs from wrong addresses etc. test out of order escrow claims.
