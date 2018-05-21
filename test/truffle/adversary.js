@@ -1,5 +1,6 @@
 const Adversary = artifacts.require("Adversary");
 const DSToken = artifacts.require("DSToken");
+const oneDai = Math.pow(10, 18);
 
 contract('Offers test', async (accounts) => {
 
@@ -15,26 +16,26 @@ contract('Offers test', async (accounts) => {
      let accountOneDai = await fakeDaiInstance.balanceOf.call(accounts[0]);
      let accountTwoDai = await fakeDaiInstance.balanceOf.call(accounts[1]);
      let accountThreeDai = await fakeDaiInstance.balanceOf.call(accounts[2]);
-     assert.equal(accountOneDai, 800);
-     assert.equal(accountTwoDai, 100);
-     assert.equal(accountThreeDai, 100);
+     assert.equal(accountOneDai, 800 * oneDai);
+     assert.equal(accountTwoDai, 100 * oneDai);
+     assert.equal(accountThreeDai, 100 * oneDai);
   });
 
   it("create offers and test dai", async () => {
-    await fakeDaiInstance.approve(adversaryInstance.address, 50, {from: accounts[1]});
-    await fakeDaiInstance.approve(adversaryInstance.address, 50, {from: accounts[0]});
-    await fakeDaiInstance.approve(adversaryInstance.address, 50, {from: accounts[2]});
-    await adversaryInstance.createOffer(true, 'ethusd', 10, {from: accounts[0]});
-    await adversaryInstance.createOffer(true, 'ethusd', 10, {from: accounts[0]});
-    await adversaryInstance.createOffer(true, 'ethbtc', 10, {from: accounts[0]});
-    await adversaryInstance.createOffer(true, 'ethusd', 10, {from: accounts[1]});
-    await adversaryInstance.createOffer(false, 'ethusd', 10, {from: accounts[1]});
-    await adversaryInstance.createOffer(false, 'ethusd', 10, {from: accounts[2]});
+    await fakeDaiInstance.approve(adversaryInstance.address, 50 * oneDai, {from: accounts[1]});
+    await fakeDaiInstance.approve(adversaryInstance.address, 50 * oneDai, {from: accounts[0]});
+    await fakeDaiInstance.approve(adversaryInstance.address, 50 * oneDai, {from: accounts[2]});
+    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[0]});
+    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[0]});
+    await adversaryInstance.createOffer(true, 'ethbtc', 10 * oneDai, 0, 0, {from: accounts[0]});
+    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[1]});
+    await adversaryInstance.createOffer(false, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[1]});
+    await adversaryInstance.createOffer(false, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[2]});
 
-    assert.equal(await fakeDaiInstance.balanceOf.call(adversaryInstance.address), 60);
-    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[0]), 770);
-    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[1]), 80);
-    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[2]), 90);
+    assert.equal(await fakeDaiInstance.balanceOf.call(adversaryInstance.address), 60 * oneDai);
+    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[0]), 770 * oneDai);
+    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[1]), 80 * oneDai);
+    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[2]), 90 * oneDai);
 
     var numOffers = await adversaryInstance.getNumOffers.call();
     var i;
@@ -51,7 +52,7 @@ contract('Offers test', async (accounts) => {
     }
     numOffers = await adversaryInstance.getNumOffers.call();
     assert.equal(numOffers, 4);
-    await adversaryInstance.createOffer(true, 'ethusd', 10, {from: accounts[2]});
+    await adversaryInstance.createOffer(true, 'ethusd', 10 * oneDai, 0, 0, {from: accounts[2]});
     numOffers = await adversaryInstance.getNumOffers.call();
     assert.equal(numOffers, 5);
 
@@ -66,10 +67,10 @@ contract('Offers test', async (accounts) => {
       assert.isAbove(offer[offerDaiIndex], 0);
     }
 
-    assert.equal(await fakeDaiInstance.balanceOf.call(adversaryInstance.address), 50);
-    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[0]), 770);
-    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[1]), 100);
-    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[2]), 80);
+    assert.equal(await fakeDaiInstance.balanceOf.call(adversaryInstance.address), 50 * oneDai);
+    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[0]), 770 * oneDai);
+    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[1]), 100 * oneDai);
+    assert.equal(await fakeDaiInstance.balanceOf.call(accounts[2]), 80 * oneDai);
   });
 
   it("Create escrows", async function() {
@@ -106,7 +107,6 @@ contract('Offers test', async (accounts) => {
     var account2DaiBefore = await fakeDaiInstance.balanceOf.call(accounts[2]);
     let escrow = await adversaryInstance.escrows.call(id);
     var escrowDai = escrow[escrowDaiIndex];
-    console.log("a0b is ", account0DaiBefore, ' a0btn = ', account0DaiBefore.toNumber(), " ed is ", escrowDai);
     var sumBefore = account0DaiBefore.toNumber() + account2DaiBefore.toNumber() + escrowDai.toNumber();
 
     const TradeCompleted = adversaryInstance.TradeCompleted();

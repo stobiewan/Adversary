@@ -22,6 +22,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
     string currency;
     uint dai;
     uint listIndex;
+    uint positiveDeltaCents;
+    uint negativeDeltaCents;
   }
 
   struct PendingTake {
@@ -42,12 +44,14 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint dai;
     uint listIndex;
     uint startPriceCents;
+    uint ceilingCents;
+    uint floorCents;
   }
 
   uint public margin = 2;
-  uint public daiDecimals = 18;
-  uint public minimumDai = 1;  // TODO calc dai conversion, uint to 1 dai
-  uint public createEscrowGasLimit = 300000;  // TODO set once code is finalised
+  uint public oneDai = 10 ** 18;
+  uint public minimumDai = 10 * oneDai;
+  uint public createEscrowGasLimit = 400000;  // TODO set once code is finalised
   uint public claimEscrowGasLimit = 400000;  // TODO calculate in testing
   uint public oracleGasPrice = 20000000000;
   uint64[] public offerIds;
@@ -81,7 +85,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
   }
 
   function withdrawEth() external onlyOwner {
-    msg.sender.send(address(this).balance);
+    msg.sender.transfer(address(this).balance);
   }
 
   function withdrawDai() external onlyOwner {
@@ -89,10 +93,11 @@ contract Adversary is DaiTransferrer, usingOraclize {
     transferDai(address(this), msg.sender, getDaiBalance(address(this)));
   }
 
-  function createOffer(bool _long, string _currency, uint _dai) public {
+  function createOffer(bool _long, string _currency, uint _dai, uint positiveDeltaCents, uint negativeDeltaCents) external {
     require(_dai >= minimumDai);
     transferDai(msg.sender, address(this), _dai);
-    offers[currentId] = Offer(msg.sender, _long, _currency, _dai, offerIds.push(currentId) - 1);
+    offers[currentId] = Offer(msg.sender, _long, _currency, _dai, offerIds.push(currentId) - 1, positiveDeltaCents,
+                              negativeDeltaCents);
     currentId++;
     emit NewOffer();
   }
@@ -120,7 +125,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     delete escrows[_escrowId];
   }
 
-  function createEscrow(uint64 _offerId) public {
+  function createEscrow(uint64 _offerId) external {
     if (oraclize_getPrice("URL") > address(this).balance) {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
@@ -131,7 +136,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     }
   }
 
-  function claimEscrow(uint64 _escrowId) public {
+  function claimEscrow(uint64 _escrowId) external {
     if (oraclize_getPrice("URL") > address(this).balance) {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
@@ -155,14 +160,13 @@ contract Adversary is DaiTransferrer, usingOraclize {
   }
 
   function completeEscrowCreation(PendingTake _take, string priceResult) internal {  // TODO is result a string?
-    Offer offer = offers[_take.offerId];
+    Offer memory offer = offers[_take.offerId];
     require(offer.dai > 0);  // check it is a real initialised offer
     transferDai(_take.taker, address(this), offer.dai);
-
-    uint numerator = offer.dai.mul(99);
-    uint totalForEscrow = numerator.div(50);
-    escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, totalForEscrow,
-                                escrowIds.push(currentId) - 1, parseInt(priceResult, 2));
+    uint startPriceCents = parseInt(priceResult, 2);
+    escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai.mul(99).div(50),
+                                escrowIds.push(currentId) - 1, startPriceCents, startPriceCents + offer.positiveDeltaCents,
+                                 startPriceCents - offer.negativeDeltaCents);
     currentId++;
     _deleteOffer(_take.offerId);
     emit NewEscrow();
@@ -171,10 +175,23 @@ contract Adversary is DaiTransferrer, usingOraclize {
   function completeEscrowClaim(PendingClaim _pendingClaim, string priceResult) internal {
     Escrow memory escrow = escrows[_pendingClaim.escrowId];
     require(_pendingClaim.claimer == escrow.maker || _pendingClaim.claimer == escrow.taker);
-    uint finalPriceCents = parseInt(priceResult, 2);  // TODO what happens with decimal
-    uint payoutForLong = (escrow.dai * ((finalPriceCents - escrow.startPriceCents) * margin + escrow.startPriceCents)) /
-                         (2 * escrow.startPriceCents);
-    uint payoutForShort = escrow.dai - payoutForLong;
+    uint payoutForLong = 0;
+    uint payoutForShort = 0;
+    uint finalPriceCents = parseInt(priceResult, 2);
+    if (escrow.ceilingCents == escrow.floorCents) {
+      payoutForLong = (escrow.dai * ((finalPriceCents - escrow.startPriceCents) * margin + escrow.startPriceCents)) /
+                           (2 * escrow.startPriceCents);
+      payoutForShort = escrow.dai - payoutForLong;
+    }
+    else {
+      require(finalPriceCents >= escrow.ceilingCents || finalPriceCents <= escrow.floorCents);
+      if (finalPriceCents >= escrow.ceilingCents) {
+        payoutForLong = escrow.dai;
+      }
+      else {
+        payoutForShort = escrow.dai;
+      }
+    }
     if(escrow.makerIsLong) {
       transferDai(address(this), escrow.maker, payoutForLong);
       transferDai(address(this), escrow.taker, payoutForShort);
