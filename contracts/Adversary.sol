@@ -236,7 +236,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     for(uint i = 0; i < offerIds.length; i++) {
       daiInUse += offers[offerIds[i]].dai;
     }
-    for(uint i = 0; i < escrowIds.length; i++) {
+    for(i = 0; i < escrowIds.length; i++) {
       daiInUse += escrows[escrowIds[i]].dai;
     }
     transferDai(address(this), msg.sender, getDaiBalance(address(this)) - daiInUse);
@@ -245,4 +245,5 @@ contract Adversary is DaiTransferrer, usingOraclize {
 
 /*
 TODO: handle oraclize failures.
+      fix calculation of oraclize fee.
 */
