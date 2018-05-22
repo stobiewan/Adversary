@@ -87,15 +87,6 @@ contract Adversary is DaiTransferrer, usingOraclize {
     oracleGasPrice = priceInWei;
   }
 
-  function withdrawEth() external onlyOwner {
-    msg.sender.transfer(address(this).balance);
-  }
-
-  function withdrawDai() external onlyOwner {
-    //TODO this allows stealing from existing escrows, but also allows fixing if something goes wrong. Only keep latter.
-    transferDai(address(this), msg.sender, getDaiBalance(address(this)));
-  }
-
   function createOffer(bool _long, string _currency, uint _dai, uint margin, uint positiveDeltaCents,
                        uint negativeDeltaCents, uint lockSeconds) external {
     require(_dai >= minimumDai);
@@ -235,8 +226,23 @@ contract Adversary is DaiTransferrer, usingOraclize {
   }
 
   function() public payable { }
+
+  function withdrawEth() external onlyOwner {
+    msg.sender.transfer(address(this).balance);
+  }
+
+  function withdrawDai() external onlyOwner {
+    uint daiInUse = 0;
+    for(uint i = 0; i < offerIds.length; i++) {
+      daiInUse += offers[offerIds[i]].dai;
+    }
+    for(uint i = 0; i < escrowIds.length; i++) {
+      daiInUse += escrows[escrowIds[i]].dai;
+    }
+    transferDai(address(this), msg.sender, getDaiBalance(address(this)) - daiInUse);
+  }
 }
 
 /*
-TODO: prevent withdrawing dai in use by offers or escrows
+TODO: handle oraclize failures.
 */
