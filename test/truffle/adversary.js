@@ -76,12 +76,13 @@ contract('Offers test', async (accounts) => {
   it("Create escrows", async function() {
     this.timeout(35 * 1000);
     var numEscrows = 0;
+    var escrowCreationGas = await adversaryInstance.createEscrowGasLimit.call();
+    var gasPriceToUse = 20000000000;
+    var ethForOracle = escrowCreationGas * gasPriceToUse + Math.pow(10, 15);
     //take up the first offer made by account zero with account[3] which still has 30 dai approved
     let id = await adversaryInstance.offerIds.call(0);
     const NewEscrow = adversaryInstance.NewEscrow();
-    let ethForOracle = await adversaryInstance.getEthRequiredForEscrow.call();
-    ethForOracle = ethForOracle.toNumber();
-    await adversaryInstance.createEscrow(id, {value: ethForOracle, from: accounts[2]});
+    await adversaryInstance.createEscrow(id, {value: ethForOracle, from: accounts[2], gasPrice: gasPriceToUse});
     let checkForPrice = new Promise((resolve, reject)  => {
       NewEscrow.watch(async function(error, result) {
         if (error) {
@@ -98,6 +99,9 @@ contract('Offers test', async (accounts) => {
 
   it("Claim escrow", async function() {
     this.timeout(35 * 1000);
+    var escrowClaimGas = await adversaryInstance.claimEscrowGasLimit.call();
+    var gasPriceToUse = 20000000000;
+    var ethForOracle = escrowClaimGas * gasPriceToUse + Math.pow(10, 15);
     //take up the only escrow as maker, account[0]. Taker is acount[2]
     let id = await adversaryInstance.escrowIds.call(0);
     var numEscrows = 1;
@@ -108,9 +112,7 @@ contract('Offers test', async (accounts) => {
     var sumBefore = account0DaiBefore.toNumber() + account2DaiBefore.toNumber() + escrowDai.toNumber();
 
     const TradeCompleted = adversaryInstance.TradeCompleted();
-    let ethForOracle = await adversaryInstance.getEthRequiredForClaim.call();
-    ethForOracle = ethForOracle.toNumber();
-    await adversaryInstance.claimEscrow(id, {value: ethForOracle, from: accounts[2]});
+    await adversaryInstance.claimEscrow(id, {value: ethForOracle, from: accounts[2], gasPrice: gasPriceToUse});
     let checkForPrice = new Promise((resolve, reject)  => {
       TradeCompleted.watch(async function(error, result) {
         if (error) {

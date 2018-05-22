@@ -75,14 +75,14 @@ contract Adversary is DaiTransferrer, usingOraclize {
   }
 
   function getEthRequiredForEscrow() public view returns (uint ethAmount) {
-    return createEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 1000;  // TODO calculate properly
+    return createEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 1000;  // TODO calculate properly when finalised
   }
 
   function getEthRequiredForClaim() public view returns (uint ethAmount) {
-    return claimEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 10000;  // TODO calculate properly
+    return claimEscrowGasLimit.mul(oracleGasPrice) + 1 ether / 10000;  // TODO calculate properly when finalised
   }
 
-  function setOracleResponseGasPrice(uint priceInWei) external onlyOwner {
+  function setOracleResponseGasPrice(uint priceInWei) internal {
     oraclize_setCustomGasPrice(priceInWei);
     oracleGasPrice = priceInWei;
   }
@@ -130,7 +130,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
   }
 
   function createEscrow(uint64 _offerId) external payable {
-    require(msg.value >= getEthRequiredForEscrow());  // TODO calculate properly
+    setOracleResponseGasPrice(tx.gasprice);
+    require(msg.value >= getEthRequiredForEscrow());
     if (oraclize_getPrice("URL") > address(this).balance) {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
@@ -142,7 +143,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
   }
 
   function claimEscrow(uint64 _escrowId) external payable {
-    require(msg.value >= getEthRequiredForClaim());  // TODO calculate properly
+    setOracleResponseGasPrice(tx.gasprice);
+    require(msg.value >= getEthRequiredForClaim());
     if (oraclize_getPrice("URL") > address(this).balance) {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
@@ -234,3 +236,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
 
   function() public payable { }
 }
+
+/*
+TODO: prevent withdrawing dai in use by offers or escrows
+*/
