@@ -132,7 +132,7 @@ contract('Offers test', async (accounts) => {
   });
 });
 
-/* TODO: Test required failures like txs from wrong addresses etc,
+/* TODO: Test required failures like txs from wrong addresses, step reward claim inside bounds, etc
          out of order escrow claims,
          lock period escrowIds
          eth and dai withdrawals when some are held in offers and escrows.

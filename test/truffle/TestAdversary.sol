@@ -142,5 +142,19 @@ contract TestAdversary {
     Assert.equal(200 * 10 ** 18, payoutForTaker, "payout for taker was incorrect");
   }
 
-  // TODO test inside step limits, on limits, outside proportional limits
+/*This test is supposed to fail a require() and exceptions can't be caught in here. So test failing is a pass.*/
+  /* function testMEANTtOfAILtestRewardCalculationInsideStepBounds() public {
+    Adversary adversary = Adversary(DeployedAddresses.Adversary());
+    uint margin = 3;
+    uint ceilingCents = 10400;
+    uint floorCents = 9600;
+    uint daiInEscrow = 200 * 10 ** 18;
+    uint startPriceCents = 10000;
+    bool makerIsLong = true;
+    string memory priceResult = "98.23";
+    uint payoutForMaker = 0;
+    uint payoutForTaker = 0;
+    (payoutForMaker, payoutForTaker) = adversary.calculateReturns(margin, ceilingCents, floorCents, daiInEscrow,
+                                                                  startPriceCents, makerIsLong, priceResult);
+  } */
 }

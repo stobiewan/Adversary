@@ -244,6 +244,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
 }
 
 /*
-TODO: handle oraclize failures.
+TODO: Add method to rescue dai if error occurs
       fix calculation of oraclize fee.
+      decide which exchange is best to use, stamp doesn't have many options but is reliable. Coinmarketcap? Finex?
+      optimise for gas,check how much smaller struct members can be and place adjacent.
 */
