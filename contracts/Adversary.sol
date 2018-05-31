@@ -127,8 +127,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
         emit LogNewOraclizeQuery("Oraclize query was sent, standing by for the answer..");
-        bytes32 queryId = oraclize_query("URL", strConcat("json(https://www.bitstamp.net/api/v2/ticker/",
-                                         offers[_offerId].currency, ").last"), createEscrowGasLimit);
+        bytes32 queryId = oraclize_query("URL", strConcat("json(https://api.bitfinex.com/v2/ticker/t",
+                                         offers[_offerId].currency, ").[6]"), createEscrowGasLimit);
         pendingTakes[queryId] = PendingTake(msg.sender, _offerId);
     }
   }
@@ -140,8 +140,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
         emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
     } else {
         emit LogNewOraclizeQuery("Oraclize query was sent, standing by for the answer..");
-        bytes32 queryId = oraclize_query("URL", strConcat("json(https://www.bitstamp.net/api/v2/ticker/",
-                                         escrows[_escrowId].currency, ").last"), claimEscrowGasLimit);
+        bytes32 queryId = oraclize_query("URL", strConcat("json(https://api.bitfinex.com/v2/ticker/t",
+                                         escrows[_escrowId].currency, ").[6]"), claimEscrowGasLimit);
         pendingClaims[queryId] = PendingClaim(msg.sender, _escrowId);
     }
   }
