@@ -163,7 +163,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     require(offer.dai > 0);  // check it is a real initialised offer
     transferDai(_take.taker, address(this), offer.dai);
     uint startPriceCents = parseInt(priceResult, 2);
-    escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai.mul(99).div(50),
+    escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai.mul(995).div(500),
                                 escrowIds.push(currentId) - 1, startPriceCents, offer.margin,
                                 startPriceCents + offer.positiveDeltaCents, startPriceCents - offer.negativeDeltaCents,
                                 offer.lockSeconds + now);

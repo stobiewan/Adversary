@@ -66,7 +66,6 @@ contract('Offers test', async (accounts) => {
       let offer = await adversaryInstance.offers.call(existingIds[i]);
       assert.isAbove(offer[offerDaiIndex], 0);
     }
-
     assert.equal(await fakeDaiInstance.balanceOf.call(adversaryInstance.address), 50 * oneDai);
     assert.equal(await fakeDaiInstance.balanceOf.call(accounts[0]), 770 * oneDai);
     assert.equal(await fakeDaiInstance.balanceOf.call(accounts[1]), 100 * oneDai);
@@ -95,6 +94,33 @@ contract('Offers test', async (accounts) => {
     });
     const resultNumEscrows = await checkForPrice;
     assert.equal(numEscrows, 1);
+  });
+
+  it("Check dai can be wihdrawn without stealing", async function() {
+    //There should initially be 60 dai within the escrow, and 20 has gone into escrow.
+    assert.equal(await fakeDaiInstance.balanceOf.call(adversaryInstance.address), 60 * oneDai);
+    var account0DaiBefore = await fakeDaiInstance.balanceOf.call(accounts[0]);
+    var account2DaiBefore = await fakeDaiInstance.balanceOf.call(accounts[2]);
+    var expectedError = false;
+    try{
+      await adversaryInstance.withdrawDai({from: accounts[2]});
+    }
+    catch(err){
+      expectedError = true;
+    }
+    if (!expectedError){
+      throw "user stole dai";
+    }
+    var account2DaiAfter = await fakeDaiInstance.balanceOf.call(accounts[2]);
+    // Only the owner (account0) should be able to withdraw so account2's balance should be the same.
+    await adversaryInstance.withdrawDai({from: accounts[0]});
+    var account0DaiAfter = await fakeDaiInstance.balanceOf.call(accounts[0]);
+    var contractDai = await fakeDaiInstance.balanceOf.call(adversaryInstance.address);
+    // 20 dai went into an escrow so 0.1 should be claimed in fees.
+    var expectedContractDai = 59.9 * oneDai
+    assert.equal(contractDai.toNumber(), expectedContractDai);
+    // account0 had 770 dai before withdrawing so should now have another 0.1
+    assert.equal(account0DaiAfter.toNumber(), 770.1 * oneDai);
   });
 
   it("Claim escrow", async function() {
