@@ -23,8 +23,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint dai;
     uint listIndex;
     uint margin;
-    uint positiveDeltaCents;
-    uint negativeDeltaCents;
+    uint PositiveDelta;  // nano units
+    uint NegativeDelta;  // nano units
     uint lockSeconds;
   }
 
@@ -45,10 +45,10 @@ contract Adversary is DaiTransferrer, usingOraclize {
     string currency;
     uint dai;
     uint listIndex;
-    uint startPriceCents;
+    uint StartPrice;  // nano units
     uint margin;
-    uint ceilingCents;
-    uint floorCents;
+    uint CeilingPrice;  // nano units
+    uint FloorPrice;  // nano units
     uint unlockSecond;
   }
 
@@ -87,12 +87,22 @@ contract Adversary is DaiTransferrer, usingOraclize {
     oracleGasPrice = priceInWei;
   }
 
-  function createOffer(bool _long, string _currency, uint _dai, uint margin, uint positiveDeltaCents,
-                       uint negativeDeltaCents, uint lockSeconds) external {
+  /*  @param _long, If true the offer maker is long and profits when the result increases and vice versa.
+      @param _currency, String to specify the symbol used in bitfinex api, eg "ETHUSD".
+      @param _dai, Quantity of dai the maker and taker will contribute to the escrow.
+      @param _margin, Integer which multiplies rate rewards change with price.
+      @param _positiveDelta If either delta is non zero then the required increase from start price before long can
+                            claim entire escrow. Nano units.
+      @param _negativeDelta If either delta is non zero then the required decrease from start price before short can
+                            claim entire escrow. Nano units.
+      @param _lockSeconds Time after escrow starts before either party can claim escrow.
+  */
+  function createOffer(bool _long, string _currency, uint _dai, uint _margin, uint _positiveDelta,
+                       uint _negativeDelta, uint _lockSeconds) external {
     require(_dai >= minimumDai);
     transferDai(msg.sender, address(this), _dai);
-    offers[currentId] = Offer(msg.sender, _long, _currency, _dai, offerIds.push(currentId) - 1, margin,
-                              positiveDeltaCents, negativeDeltaCents, lockSeconds);
+    offers[currentId] = Offer(msg.sender, _long, _currency, _dai, offerIds.push(currentId) - 1, _margin,
+                              _positiveDelta, _negativeDelta, _lockSeconds);
     currentId++;
     emit NewOffer();
   }
@@ -162,10 +172,10 @@ contract Adversary is DaiTransferrer, usingOraclize {
     Offer memory offer = offers[_take.offerId];
     require(offer.dai > 0);  // check it is a real initialised offer
     transferDai(_take.taker, address(this), offer.dai);
-    uint startPriceCents = parseInt(priceResult, 2);
+    uint StartPrice = parseInt(priceResult, 9);
     escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai.mul(995).div(500),
-                                escrowIds.push(currentId) - 1, startPriceCents, offer.margin,
-                                startPriceCents + offer.positiveDeltaCents, startPriceCents - offer.negativeDeltaCents,
+                                escrowIds.push(currentId) - 1, StartPrice, offer.margin,
+                                StartPrice + offer.PositiveDelta, StartPrice - offer.NegativeDelta,
                                 offer.lockSeconds + now);
     currentId++;
     _deleteOffer(_take.offerId);
@@ -178,8 +188,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
     require(now > escrow.unlockSecond);
     uint payoutForMaker = 0;
     uint payoutForTaker = 0;
-    (payoutForMaker, payoutForTaker) = calculateReturns(escrow.margin, escrow.ceilingCents, escrow.floorCents,
-                                                        escrow.dai, escrow.startPriceCents, escrow.makerIsLong,
+    (payoutForMaker, payoutForTaker) = calculateReturns(escrow.margin, escrow.CeilingPrice, escrow.FloorPrice,
+                                                        escrow.dai, escrow.StartPrice, escrow.makerIsLong,
                                                         priceResult);
     transferDai(address(this), escrow.maker, payoutForMaker);
     transferDai(address(this), escrow.taker, payoutForTaker);
@@ -187,29 +197,29 @@ contract Adversary is DaiTransferrer, usingOraclize {
     emit TradeCompleted();
   }
 
-  function calculateReturns(uint margin, uint ceilingCents, uint floorCents, uint daiInEscrow,
-                            uint startPriceCents, bool makerIsLong, string priceResult)
+  function calculateReturns(uint margin, uint CeilingPrice, uint FloorPrice, uint daiInEscrow,
+                            uint StartPrice, bool makerIsLong, string priceResult)
                             public pure returns (uint payoutForMaker, uint payoutForTaker) {
     uint payoutForLong = 0;
     uint payoutForShort = 0;
-    uint finalPriceCents = parseInt(priceResult, 2);
-    if (ceilingCents == floorCents) {
-      int marginDelta = int(margin) * int(finalPriceCents - startPriceCents);
-      int marginDeltaPlusStart = marginDelta + int(startPriceCents);
-      if (marginDelta > int(startPriceCents)) {
+    uint FinalPrice = parseInt(priceResult, 9);
+    if (CeilingPrice == FloorPrice) {
+      int marginDelta = int(margin) * int(FinalPrice - StartPrice);
+      int marginDeltaPlusStart = marginDelta + int(StartPrice);
+      if (marginDelta > int(StartPrice)) {
         payoutForLong = daiInEscrow;
       }
       else if (marginDeltaPlusStart < 0) {
         payoutForLong = 0;
       }
       else {
-        payoutForLong = (daiInEscrow * (uint(marginDeltaPlusStart))) / (2 * startPriceCents);
+        payoutForLong = (daiInEscrow * (uint(marginDeltaPlusStart))) / (2 * StartPrice);
       }
       payoutForShort = daiInEscrow - payoutForLong;
     }
     else {
-      require(finalPriceCents >= ceilingCents || finalPriceCents <= floorCents);
-      if (finalPriceCents >= ceilingCents) {
+      require(FinalPrice >= CeilingPrice || FinalPrice <= FloorPrice);
+      if (FinalPrice >= CeilingPrice) {
         payoutForLong = daiInEscrow;
       }
       else {
@@ -246,6 +256,5 @@ contract Adversary is DaiTransferrer, usingOraclize {
 /*
 TODO: Add method to rescue dai if error occurs
       fix calculation of oraclize fee.
-      decide which exchange is best to use, stamp doesn't have many options but is reliable. Coinmarketcap? Finex?
-      optimise for gas,check how much smaller struct members can be and place adjacent.
+      optimise for gas,check how much smaller struct members can be and place adjacent. At least uint64 for prices
 */
