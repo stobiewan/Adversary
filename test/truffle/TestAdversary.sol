@@ -112,7 +112,7 @@ contract TestAdversary {
 
   function testRewardCalculationLongStep() public {
     Adversary adversary = Adversary(DeployedAddresses.Adversary());
-    uint margin = 2;
+    uint margin = 0;
     uint ceiling = 105 * nanoUnits;
     uint floor = 95 * nanoUnits;
     uint daiInEscrow = 200 * 10 ** 18;
@@ -129,7 +129,7 @@ contract TestAdversary {
 
   function testRewardCalculationShortStep() public {
     Adversary adversary = Adversary(DeployedAddresses.Adversary());
-    uint margin = 2;
+    uint margin = 0;
     uint ceiling = 105 * nanoUnits;
     uint floor = 95 * nanoUnits;
     uint daiInEscrow = 200 * 10 ** 18;
@@ -147,7 +147,7 @@ contract TestAdversary {
 /*This test is supposed to fail a require() and exceptions can't be caught in here. So test failing is a pass.*/
   /* function testMEANTtOfAILtestRewardCalculationInsideStepBounds() public {
     Adversary adversary = Adversary(DeployedAddresses.Adversary());
-    uint margin = 3;
+    uint margin = 0;
     uint ceiling = 104 * nanoUnits;
     uint floor = 96 * nanoUnits;
     uint daiInEscrow = 200 * 10 ** 18;

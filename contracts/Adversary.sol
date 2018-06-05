@@ -52,10 +52,12 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint unlockSecond;
   }
 
-  uint public oneDai = 10 ** 18;
-  uint public minimumDai = 10 * oneDai;
-  uint public createEscrowGasLimit = 400000;  // TODO set once code is finalised
-  uint public claimEscrowGasLimit = 400000;  // TODO calculate in testing
+  uint constant public oneDai = 10 ** 18;
+  uint constant public minimumDai = 10 * oneDai;
+  uint constant public createEscrowGasLimit = 400000;  // TODO set once code is finalised
+  uint constant public claimEscrowGasLimit = 400000;  // TODO calculate in testing
+  bytes32 constant public rescueKey = "signtodestroyescrow";
+
   uint public oracleGasPrice = 20000000000;
   uint64[] public offerIds;
   uint64[] public escrowIds;
@@ -90,10 +92,10 @@ contract Adversary is DaiTransferrer, usingOraclize {
   /*  @param _long, If true the offer maker is long and profits when the result increases and vice versa.
       @param _currency, String to specify the symbol used in bitfinex api, eg "ETHUSD".
       @param _dai, Quantity of dai the maker and taker will contribute to the escrow.
-      @param _margin, Integer which multiplies rate rewards change with price.
-      @param _positiveDelta If either delta is non zero then the required increase from start price before long can
+      @param _margin, Integer which multiplies rate rewards change with price, use zero for step function rewards.
+      @param _positiveDelta If margin is zero then the required increase from start price before long can
                             claim entire escrow. Nano units.
-      @param _negativeDelta If either delta is non zero then the required decrease from start price before short can
+      @param _negativeDelta If margin is zero then the required decrease from start price before short can
                             claim entire escrow. Nano units.
       @param _lockSeconds Time after escrow starts before either party can claim escrow.
   */
@@ -203,7 +205,16 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint payoutForLong = 0;
     uint payoutForShort = 0;
     uint FinalPrice = parseInt(priceResult, 9);
-    if (CeilingPrice == FloorPrice) {
+    if (margin == 0) {
+      require(FinalPrice >= CeilingPrice || FinalPrice <= FloorPrice);
+      if (FinalPrice >= CeilingPrice) {
+        payoutForLong = daiInEscrow;
+      }
+      else {
+        payoutForShort = daiInEscrow;
+      }
+    }
+    else {
       int marginDelta = int(margin) * int(FinalPrice - StartPrice);
       int marginDeltaPlusStart = marginDelta + int(StartPrice);
       if (marginDelta > int(StartPrice)) {
@@ -216,15 +227,6 @@ contract Adversary is DaiTransferrer, usingOraclize {
         payoutForLong = (daiInEscrow * (uint(marginDeltaPlusStart))) / (2 * StartPrice);
       }
       payoutForShort = daiInEscrow - payoutForLong;
-    }
-    else {
-      require(FinalPrice >= CeilingPrice || FinalPrice <= FloorPrice);
-      if (FinalPrice >= CeilingPrice) {
-        payoutForLong = daiInEscrow;
-      }
-      else {
-        payoutForShort = daiInEscrow;
-      }
     }
 
     if(makerIsLong) {
@@ -250,6 +252,12 @@ contract Adversary is DaiTransferrer, usingOraclize {
       daiInUse += escrows[escrowIds[i]].dai;
     }
     transferDai(address(this), msg.sender, getDaiBalance(address(this)) - daiInUse);
+  }
+
+  /* If an escrow gets stuck and both the maker and taker sign the key the escrow can be rescued and distributed equally
+  */
+  function rescueStuckEscrow(uint _escrowId, string _signedByMaker, string _signedByTaker) external {
+    // TODO
   }
 }
 
