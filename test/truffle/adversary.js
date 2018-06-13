@@ -102,7 +102,7 @@ contract('Offers test', async (accounts) => {
   it("Create escrows", async function() {
     this.timeout(40 * 1000);
     var numEscrows = 0;
-    var escrowCreationGas = await adversaryInstance.createEscrowGasLimit.call();
+    var escrowCreationGas = await adversaryInstance.CREATE_ESCROW_GAS_LIMIT.call();
     let offerId0 = await adversaryInstance.offerIds.call(0);
     let offerId1 = await adversaryInstance.offerIds.call(1);
     let offerId2 = await adversaryInstance.offerIds.call(2);
@@ -239,7 +239,7 @@ contract('Offers test', async (accounts) => {
     var numEscrows;
     this.timeout(40 * 1000);
     await assertExpectedEscrows([8, 11, 10]);
-    var escrowClaimGas = await adversaryInstance.claimEscrowGasLimit.call();
+    var escrowClaimGas = await adversaryInstance.CLAIM_ESCROW_GAS_LIMIT.call();
     var account0DaiBefore = await fakeDaiInstance.balanceOf.call(accounts[0]);
     var account2DaiBefore = await fakeDaiInstance.balanceOf.call(accounts[2]);
     var account3DaiBefore = await fakeDaiInstance.balanceOf.call(accounts[3]);
