@@ -7,9 +7,10 @@ const asyncSetup = async function asyncSetup(accounts) {
   adversaryInstance = await adversary.deployed();
   fakeDaiInstance = await fakeDai.deployed();
   await adversaryInstance.setDaiContractAddress(fakeDaiInstance.address);
-  await fakeDaiInstance.mint(1000 * oneDai, {from: accounts[0]});
+  await fakeDaiInstance.mint(1100 * oneDai, {from: accounts[0]});
   await fakeDaiInstance.push(accounts[1], 100 * oneDai, {from: accounts[0]});
   await fakeDaiInstance.push(accounts[2], 100 * oneDai, {from: accounts[0]});
+  await fakeDaiInstance.push(accounts[3], 100 * oneDai, {from: accounts[0]});
 }
 
 

@@ -56,7 +56,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
   uint constant public minimumDai = 10 * oneDai;
   uint constant public createEscrowGasLimit = 400000;  // TODO set once code is finalised
   uint constant public claimEscrowGasLimit = 400000;  // TODO calculate in testing
-  bytes32 constant public rescueKey = "signtodestroyescrow";
+  // result of web3.sha3(\x19Ethereum Signed Message:\n22sign to destroy escrow);  see test to reproduce.
+  bytes32 constant public rescueMsgHash = 0x0b5aeebdde1c7d6f965711096ca4f564aba1fea366fa994cf30a2bde9958891c;
 
   uint public oracleGasPrice = 20000000000;
   uint64[] public offerIds;
@@ -128,8 +129,8 @@ contract Adversary is DaiTransferrer, usingOraclize {
     uint listIndex = escrows[_escrowId].listIndex;
     escrowIds[listIndex] = escrowIds[escrowIds.length - 1];
     escrows[escrowIds[listIndex]].listIndex = listIndex;
-    escrowIds.length --;
     delete escrows[_escrowId];
+    escrowIds.length --;
   }
 
   function createEscrow(uint64 _offerId) external payable {
@@ -172,16 +173,16 @@ contract Adversary is DaiTransferrer, usingOraclize {
 
   function completeEscrowCreation(PendingTake _take, string priceResult) internal {
     Offer memory offer = offers[_take.offerId];
-    require(offer.dai > 0);  // check it is a real initialised offer
+    require(offer.dai > 0);  // to check it is a real initialised offer
     transferDai(_take.taker, address(this), offer.dai);
     uint StartPrice = parseInt(priceResult, 9);
     escrows[currentId] = Escrow(offer.maker, _take.taker, offer.makerIsLong, offer.currency, offer.dai.mul(995).div(500),
                                 escrowIds.push(currentId) - 1, StartPrice, offer.margin,
                                 StartPrice + offer.PositiveDelta, StartPrice - offer.NegativeDelta,
                                 offer.lockSeconds + now);
-    currentId++;
     _deleteOffer(_take.offerId);
     emit NewEscrow();
+    currentId++;
   }
 
   function completeEscrowClaim(PendingClaim _pendingClaim, string priceResult) internal {
@@ -256,13 +257,31 @@ contract Adversary is DaiTransferrer, usingOraclize {
 
   /* If an escrow gets stuck and both the maker and taker sign the key the escrow can be rescued and distributed equally
   */
-  function rescueStuckEscrow(uint _escrowId, string _signedByMaker, string _signedByTaker) external {
-    // TODO
+  function rescueStuckEscrow(
+      uint64 escrowId,
+      uint8 makerV,
+      bytes32 makerR,
+      bytes32 makerS,
+      uint8 takerV,
+      bytes32 takerR,
+      bytes32 takerS
+  )
+      external
+  {
+      Escrow memory escrow = escrows[escrowId];
+      require(ecrecover(rescueMsgHash, makerV, makerR, makerS) == escrow.maker);
+      require(ecrecover(rescueMsgHash, takerV, takerR, takerS) == escrow.taker);
+      uint payoutForMaker = escrow.dai / 2;
+      uint payoutForTaker = escrow.dai - payoutForMaker;
+      transferDai(address(this), escrow.maker, payoutForMaker);
+      transferDai(address(this), escrow.taker, payoutForTaker);
+      _deleteEscrow(escrowId);
+      emit TradeCompleted();
   }
 }
 
 /*
-TODO: Add method to rescue dai if error occurs
-      fix calculation of oraclize fee.
-      optimise for gas,check how much smaller struct members can be and place adjacent. At least uint64 for prices
+TODO: fix calculation of oraclize fee.
+      optimise for gas,check how much smaller struct members can be and place adjacent. At least uint64 for prices.
+      handle overflows etc, update safe math
 */
