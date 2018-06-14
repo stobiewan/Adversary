@@ -331,5 +331,5 @@ contract Adversary is DaiTransferrer, usingOraclize {
 /*
 TODO: fix calculation of oraclize fee.
       optimise for gas,check how much smaller struct members can be and place adjacent. At least uint64 for prices.
-      handle overflows etc, update safe math
+      handle overflows etc
 */
