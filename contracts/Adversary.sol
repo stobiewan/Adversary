@@ -15,7 +15,6 @@ contract Adversary is DaiTransferrer, usingOraclize {
     event OfferDeleted();
     event NewEscrow();
     event TradeCompleted();
-    event LogPriceUpdated(string price);
     event LogNewOraclizeQuery(string description);
 
     struct Offer {
@@ -54,8 +53,9 @@ contract Adversary is DaiTransferrer, usingOraclize {
         uint unlockSecond;
     }
 
-    uint constant public ONE_DAI = 10 ** 18;
-    uint constant public MINIMUM_DAI = 10 * ONE_DAI;
+    bool private contractEnabled = true;
+    uint private timeDisabled = 0xFFFFFFFFFF;
+    uint constant public MINIMUM_DAI = 10 * 10 ** 18;  // 10 Dai
     uint constant public CREATE_ESCROW_GAS_LIMIT = 400000;  // TODO set once code is finalised
     uint constant public CLAIM_ESCROW_GAS_LIMIT = 400000;  // TODO calculate in testing
     // result of web3.sha3(\x19Ethereum Signed Message:\n22sign to destroy escrow);  see test to reproduce.
@@ -94,7 +94,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
     )
     external
     {
-        require(dai >= MINIMUM_DAI);
+        require(dai >= MINIMUM_DAI && contractEnabled);
         transferDai(msg.sender, address(this), dai);
         offers[currentId] = Offer(
             msg.sender,
@@ -119,7 +119,7 @@ contract Adversary is DaiTransferrer, usingOraclize {
 
     function createEscrow(uint64 offerId) external payable {
         setOracleResponseGasPrice(tx.gasprice);
-        require(msg.value >= getEthRequiredForEscrow());
+        require(msg.value >= getEthRequiredForEscrow() && contractEnabled);
         if (oraclize_getPrice("URL") > address(this).balance) {
             emit LogNewOraclizeQuery("Oraclize query was NOT sent, please add some ETH to cover for the query fee");
         } else {
@@ -141,21 +141,6 @@ contract Adversary is DaiTransferrer, usingOraclize {
                 escrows[escrowId].currency, ").[6]"), CLAIM_ESCROW_GAS_LIMIT);
             pendingClaims[queryId] = PendingClaim(msg.sender, escrowId);
         }
-    }
-
-    function withdrawEth() external onlyOwner {
-        msg.sender.transfer(address(this).balance);
-    }
-
-    function withdrawDai() external onlyOwner {
-        uint daiInUse = 0;
-        for (uint i = 0; i < offerIds.length; i++) {
-            daiInUse += offers[offerIds[i]].dai;
-        }
-        for (i = 0; i < escrowIds.length; i++) {
-            daiInUse += escrows[escrowIds[i]].dai;
-        }
-        transferDai(address(this), msg.sender, getDaiBalance(address(this)) - daiInUse);
     }
 
     /* If an escrow gets stuck and both the maker and taker sign the key the escrow can be distributed equally
@@ -180,6 +165,33 @@ contract Adversary is DaiTransferrer, usingOraclize {
         transferDai(address(this), escrow.taker, payoutForTaker);
         _deleteEscrow(escrowId);
         emit TradeCompleted();
+    }
+
+    function withdrawEth() external onlyOwner {
+        msg.sender.transfer(address(this).balance);
+    }
+
+    function withdrawDai() external onlyOwner {
+        uint daiInUse = 0;
+        for (uint i = 0; i < offerIds.length; i++) {
+            daiInUse += offers[offerIds[i]].dai;
+        }
+        for (i = 0; i < escrowIds.length; i++) {
+            daiInUse += escrows[escrowIds[i]].dai;
+        }
+        transferDai(address(this), msg.sender, getDaiBalance(address(this)) - daiInUse);
+    }
+
+    /*This will prevent creating offers and escrows but existing ones will still function*/
+    function disableContract() external onlyOwner {
+        contractEnabled = false;
+        timeDisabled = now;
+    }
+
+    function finalise() external onlyOwner {
+        require(now > timeDisabled + 365 days);
+        transferDai(address(this), msg.sender, getDaiBalance(address(this)));
+        selfdestruct(owner);
     }
 
     function getNumOffers() external view returns (uint length) {
